@@ -149,22 +149,22 @@
 		<Sprite id="92" src="92" name="Whacka"/>
 		<Sprite id="93" src="93" name="Dryite"/>
 		<Sprite id="94" src="94" name="Mouser"/>
-		<Sprite id="95" src="95" name="Boo"/>
+		<Sprite id="95" src="95" name="King Boo"/>
 		<Sprite id="96" src="96" name="Yoshi"/>
 		<Sprite id="97" src="97" name="Yoshi Kid"/>
 		<Sprite id="98" src="98" name="Raven"/>
 		<Sprite id="99" src="99" name="Bubulb"/>
 		<Sprite id="9A" src="9A" name="Penguin"/>
-		<Sprite id="9B" src="9B" name="Shiver Toad"/>
-		<Sprite id="9C" src="9C" name="Alt Bandit"/>
+		<Sprite id="9B" src="9B" name="Robo Mario"/>
+		<Sprite id="9C" src="9C" name="Tatanga"/>
 		<Sprite id="9D" src="9D" name="Goompapa"/>
 		<Sprite id="9E" src="9E" name="Goombaria"/>
 		<Sprite id="9F" src="9F" name="Goomama"/>
 		<Sprite id="A0" src="A0" name="Goompa"/>
 		<Sprite id="A1" src="A1" name="Goomma"/>
 		<Sprite id="A2" src="A2" name="The Master"/>
-		<Sprite id="A3" src="A3" name="Chan"/>
-		<Sprite id="A4" src="A4" name="Lee"/>
+		<Sprite id="A3" src="A3" name="Cackletta"/>
+		<Sprite id="A4" src="A4" name="E. Gadd"/>
 		<Sprite id="A5" src="A5" name="Merlon"/>
 		<Sprite id="A6" src="A6" name="Chet Rippo"/>
 		<Sprite id="A7" src="A7" name="Rowf"/>
