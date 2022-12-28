@@ -1,0 +1,1046 @@
+%Dark Mario
+%His stats are based on the player's stats
+%To avoid making the pit boss too easy the fight also has dark partners too
+
+%Stats
+%HP = Mario's max HP * 2
+%Attack = Mario's attack power
+%	(to make this simpler, assume ultra equipment + 1, boots = 4, hammer = 8)
+%	List of things to check
+%		Power plus (x3)
+%		All or Nothing (assume it always triggers)
+%		P-up D-down
+%		P-down D-up
+%	Conditional power increases
+%		Power rush (*triggers at 10 hp or lower)
+%		Mega rush (*triggers at 2 hp or lower)
+%		Perfect rush
+%Defense = Mario's defense power (Assume he always blocks, so base = 1)
+%	List of things to check
+%		Defend plus (x3)
+%		Damage dodge (x3) (always triggers)
+%		P-up D-down
+%		P-down D-up
+%	0-7 defense
+%	Conditional defense increases
+%		Last Stand (this is special and uses a special value)
+
+% Define your graphics here
+#define .Anim:Stop	00F70000
+#define .Anim:Idle	00F70013
+#define .Anim:Poison  00F70000
+#define .Anim:Pain	00F7000F
+#define .Anim:Dizzy	00F70000
+#define .Anim:Dead	00F70010
+#define .Anim:Sleep  00F70000
+#define .Anim:Burn   00F7000F
+#define .Anim:Burn2  00F7000F
+#define .Anim:Walk 	00F70001
+#define .Anim:Run 	00F70002
+
+#define .Anim:Crouch 	00F70003
+#define .Anim:Jump 		00F70004
+#define .Anim:Falling 	00F70005
+#define .Anim:Land	 	00F70006
+
+#define .Anim:HammerStart 	00F70008
+#define .Anim:HammerWindup 	00F70009
+#define .Anim:HammerHold 	00F7000A
+#define .Anim:HammerHoldFast 00F7000B
+#define .Anim:HammerPreHit	00F7000C
+#define .Anim:HammerHit	 	00F7000D
+
+#define .Anim:Faceplant	 	00F70012
+
+%Define Stats here
+#define .Damage:NormalJump 1`
+#define .Damage:PenetrateJump 2`
+#define .Damage:MegaJump 4`
+
+#new:Actor $RoboMario
+{
+% stats
+[Index]        FAb % index from ActorTable.xml
+[Level]       0`b % 50 SP at level 26 
+[MaxHP]       10`b 
+[Coins]         0`b 
+[Flags]       00000000 
+[StatusTable] $StatusTable_DarkMario
+% ai
+[PartsCount]   2`s 
+[PartsTable] $PartsTable_DarkMario 
+[Script]      $Script_Init_DarkMario
+% move effectiveness
+[Escape]        0`b 
+[Item]          0`b 
+[AirLift]       0`b 
+[Hurricane]     0`b % Bow's "Spook" as well
+[UpAndAway]     0`b 
+[PowerBounce]   3`b 
+[SpinSmash]     0`b % weight (0-4)
+% ui positions
+[Size]         24`b  32`b % width height
+[HealthBar]     0`b   0`b % dx dy
+[StatusTurn]  -10`b  20`b % dx dy
+[StatusIcon]   10`b  20`b % dx dy
+}
+
+#new:DefenseTable $DefenseTable_DarkMario0
+{
+.Element:Normal 0`
+.Element:End
+}
+
+#new:DefenseTable $DefenseTable_DarkMario1
+{
+.Element:Normal 1`
+.Element:End
+}
+
+#new:DefenseTable $DefenseTable_DarkMario2
+{
+.Element:Normal 2`
+.Element:End
+}
+
+#new:DefenseTable $DefenseTable_DarkMario3
+{
+.Element:Normal 3`
+.Element:End
+}
+
+#new:DefenseTable $DefenseTable_DarkMario4
+{
+.Element:Normal 4`
+.Element:End
+}
+
+#new:DefenseTable $DefenseTable_DarkMario5
+{
+.Element:Normal 5`
+.Element:End
+}
+
+#new:DefenseTable $DefenseTable_DarkMario6
+{
+.Element:Normal 6`
+.Element:End
+}
+
+#new:DefenseTable $DefenseTable_DarkMario7
+{
+.Element:Normal 7`
+.Element:End
+}
+
+#new:DefenseTable $DefenseTable_DarkMario8
+{
+.Element:Normal 8`
+.Element:End
+}
+
+#new:DefenseTable $DefenseTable_DarkMario9
+{
+.Element:Normal 9`
+.Element:End
+}
+
+#new:StatusTable $StatusTable_DarkMario
+{
+.Status:Normal      0`
+.Status:Default     0`
+.Status:Sleep       0`
+.Status:Poison      0`
+.Status:Frozen      0`
+.Status:Dizzy       0`
+.Status:Fear        0`
+.Status:Static      0`
+.Status:Paralyze    0`
+.Status:Shrink      0`
+.Status:Stop        0`
+.Status:DefaultTurnMod    0`
+.Status:SleepTurnMod      0`
+.Status:PoisonTurnMod     0`
+.Status:FrozenTurnMod     0`
+.Status:DizzyTurnMod      0`
+.Status:FearTurnMod       0`
+.Status:StaticTurnMod     0`
+.Status:ParalyzeTurnMod   0`
+.Status:ShrinkTurnMod     0`
+.Status:StopTurnMod       0`
+.Status:End
+}
+
+#new:PartsTable $PartsTable_DarkMario
+{
+00800000 01000000 001400FF $IdleAnimations_DarkMario $DefenseTable_DarkMario1 00040000 00000000 00F60000 00000000 
+00120001 02000000 000000FF $IdleAnimations_Cloud $DefenseTable_DarkMario1 00000000 00000000 00000000 00000000 
+}
+
+#new:IdleAnimations $IdleAnimations_DarkMario
+{
+.Status:Normal    .Anim:Idle
+.Status:Stone     .Anim:Stop
+.Status:Sleep     .Anim:Sleep
+.Status:Poison    .Anim:Poison
+.Status:Stop      .Anim:Stop
+.Status:Static    .Anim:Idle
+.Status:Paralyze  .Anim:Stop
+.Status:Dizzy     .Anim:Dizzy
+.Status:Fear      .Anim:Dizzy
+.Status:End
+}
+
+#new:IdleAnimations $IdleAnimations_Cloud
+{
+.Status:Normal    00100D1B % new animation
+.Status:End
+}
+
+#new:Script $Script_Init_DarkMario
+{
+	Call     BindTakeTurn 	( .Actor:Self $Script_TakeTurn_DarkMario )
+	Call     BindIdle    	( .Actor:Self $Script_Idle_DarkMario )
+    Call     BindHandleEvent 	( .Actor:Self $Script_HandleEvent_DarkMario )
+	Call	 BindNextTurn	( .Actor:Self $Script_NextTurn_DarkMario )
+    Call	 SetActorVar	( .Actor:Self 0000000E 00000000 ) %Zap tap flag
+    Return
+    End
+}
+
+#new:Script $Script_Idle_DarkMario
+{
+  Return
+  End
+}
+
+#new:Script $Script_MegaShake
+{
+    0:  Call  StartRumble   ( 0000000B )
+   10:  Thread
+   18:  	Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[1.0] )
+   34:  	Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[3.0] )
+   50:  	Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[6.0] )
+   6C:  	Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[5.0] )
+   88:  	Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[4.0] )
+   A4:  	Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[3.0] )
+   C0:  	Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[2.0] )
+   DC:  	Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[1.0] )
+   F8:  	Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[0.5] )
+  114:  	Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[0.2] )
+  130:  EndThread
+  138:  Return
+  140:  End
+}				  
+
+#new:Function $Function_Electrify % ( duration )
+{
+	ADDIU	SP, SP, FFE0
+	SW		RA, 10 (SP)
+	SW		S1, 14 (SP)
+	SW		S2, 18 (SP)
+	% get turn count
+	LW		A1, 0 (S0)
+	JAL		~Func:get_variable
+	DADDU	S1, A0, R0
+	ANDI	V0, V0, 00FF
+	% add electify status
+	LW		A0, 148 (S1)
+	JAL		~Func:get_actor
+	DADDU	S2, V0, R0
+	ORI		S2, S2, 0B00
+	SH		S2, 212 (V0)
+	% return
+	LW		RA, 10 (SP)
+	LW		S1, 14 (SP)
+	LW		S2, 18 (SP)
+	ADDIU	V0, R0, 2
+	JR		RA
+	ADDIU	SP, SP, 20
+}
+
+#new:Script $Script_NextTurn_DarkMario
+{
+	Return
+	End
+}
+
+#new:Script $Script_HandleEvent_DarkMario
+{
+    Call     UseIdleAnimation 	( .Actor:Self .False )
+    Call     EnableIdleScript 	( .Actor:Self .False )
+    Call     SetActorScale 	( .Actor:Self *Fixed[1.0] *Fixed[1.0] *Fixed[1.0] )
+    Call     GetLastEvent 	( .Actor:Self *Var0 )
+    Switch  *Var0 
+        CaseOR  ==  .Event:HitCombo
+        CaseOR  ==  .Event:Hit
+     		SetConst  *Var0  00000001 
+     		SetConst  *Var1  .Anim:Pain 
+     		ExecWait DoNormalHit 
+     	EndCaseGroup
+     	Case  ==  .Event:BurnHit
+     		SetConst  *Var0  00000001 
+     		SetConst  *Var1  .Anim:Burn 
+     		SetConst  *Var2  .Anim:Burn2 
+     		ExecWait DoBurnHit 
+     	Case  ==  .Event:BurnDeath
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Burn 
+    		SetConst  *Var2  .Anim:Burn2 
+    		ExecWait DoBurnHit 
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Burn2 
+    		ExecWait DoDeath 
+    		Return
+    	Case  ==  .Event:SpinSmashHit
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Pain 
+    		ExecWait 8029B998 
+    	Case  ==  .Event:SpinSmashDeath
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Pain 
+    		ExecWait 8029B998 
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Dead 
+    		ExecWait DoDeath 
+    		Return
+    	Case  ==  .Event:ShockHit
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Pain 
+    		ExecWait DoShockHit 
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Pain 
+    		ExecWait 8029BD70 
+			Call	 SetActorVar	( .Actor:Self 0000000E 00000001 )
+    		Call     JumpToGoal  	( .Actor:Self 00000005 00000000 00000001 00000000 )
+    		Call     SetAnimationRate 	( .Actor:Self 00000001 *Fixed[2.0] )
+    		Call     SetAnimation 	( .Actor:Self 00000001 .Anim:Run )
+    		Call     SetGoalToHome 	( .Actor:Self )
+    		Call     SetActorSpeed 	( .Actor:Self *Fixed[8.0] )
+    		Call     RunToGoal   	( .Actor:Self 00000000 .False )
+    		Call     SetAnimationRate 	( .Actor:Self 00000001 *Fixed[1.0] )
+    		Wait     00000005 
+    		Call     SetAnimation 	( .Actor:Self 00000001 .Anim:Idle )
+    		Call     SetActorJumpGravity 	( .Actor:Self *Fixed[1.6005859] )
+    		Call     JumpToGoal  	( .Actor:Self 00000005 00000000 00000001 00000000 )
+    	Case  ==  .Event:ShockDeath
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Pain 
+    		ExecWait DoShockHit 
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Dead 
+    		ExecWait DoDeath 
+    		Return
+    	Case  ==  .Event:StarBeam
+    	CaseOR  ==  00000017
+    	CaseOR  ==  .Event:Immune
+    	CaseOR  ==  .Event:AirLiftFailed
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Idle 
+    		ExecWait DoImmune 
+    	EndCaseGroup
+    	Case  ==  .Event:Death
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Pain 
+    		ExecWait DoNormalHit 
+    		Wait     0000000A 
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Dead 
+    		ExecWait DoDeath 
+    		Return
+    	Case  ==  .Event:EndFirstStrike
+    		Call     SetAnimationRate 	( .Actor:Self 00000001 *Fixed[2.0] )
+    		Call     SetAnimation 	( .Actor:Self 00000001 .Anim:Run )
+    		Call     SetGoalToHome 	( .Actor:Self )
+    		Call     SetActorSpeed 	( .Actor:Self *Fixed[4.0] )
+    		Call     RunToGoal   	( .Actor:Self 00000000 .False )
+    		Call     SetAnimationRate 	( .Actor:Self 00000001 *Fixed[1.0] )
+    		Call     HPBarToHome 	( .Actor:Self )
+    	Case  ==  .Event:RecoverStatus
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Idle 
+    		ExecWait DoRecover 
+    	Case  ==  .Event:ScareAway
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Run 
+    		SetConst  *Var2  .Anim:Pain 
+    		ExecWait DoScareAway 
+    		Return
+    	Case  ==  .Event:BeginAirLift
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Run 
+    		ExecWait DoAirLift 
+    	Case  ==  .Event:BlowAway
+    		SetConst  *Var0  00000001 
+    		SetConst  *Var1  .Anim:Pain 
+    		ExecWait DoBlowAway 
+    		Return
+    	Default
+    EndSwitch
+	ExecWait $Script_CalculateAttack
+	ExecWait $Script_CalculateDefense
+    Call     SetAnimation 	( .Actor:Self 00000001 .Anim:Idle )
+    Call     EnableIdleScript 	( .Actor:Self .True )
+    Call     UseIdleAnimation 	( .Actor:Self .True )
+    Return
+    End
+}
+
+%AI:
+%	alternate jump and hammer
+%	Possible jump moves:
+%		regular jump (*uncommon)	0
+%		dizzy jump					1
+%		power bounce				2
+%		d-down jump					3
+%		multibounce					4
+%		megajump					5
+%	Possible hammer moves:
+%		regular hammer (*uncommon)	0 (6)
+%		megasmash					1 (7)
+%		mega quake					2 (8)
+%		dual smash					3 (9)
+%		d-down smash				4 (A)
+
+%FP counter
+%	Each move increases fp counter, makes high fp moves rarer
+%	Original costs
+%		Normal jump / hammer = 0 fp
+%		Multibounce = 2 fp
+%		D down pound / jump /dizzy stomp = 4 fp
+%		Power Bounce = 6 fp
+%		Megaquake = 7 fp
+%		Dual Smash = 8 fp
+%		Megasmash / Megajump = 9 fp
+%Base chances for all moves start at 10
+%	FP counter modifier
+%		-((Move cost - 2) * (FP counter / FP max - 30%))
+%		-((Z) * (FP counter - (3/10 * FPmax) / FPmax))
+%	Atk and Def modifiers
+%		All hammer moves get modified by (def - atk)
+%		Ddown moves get modified by (def - atk - 1)
+%		All jump moves get modified by (atk - def) + 1 (or -(def - atk - 1))
+%	Danger modifiers
+%		If mario / dark mario are at or below 10 hp (near danger or in danger)
+%			Both megasmash and megajump get a +6 modifier
+%	Actorvar F contains a value for last move done
+%		Last move done gets a -15 temporary penalty
+%		Moves of same type (hammer/jump) get -7 penalty
+%	Misc modifiers
+%		Megaquake gets -3 if you have a floating partner, +3 if not
+%		Megaquake + multibounce both get -15 if partner is stunned
+%	If mario gets zapped by zap tap, jump moves are set to 0 priority except Megajump, hammer moves get a +10 boost (megajump gets no boost)
+
+
+%Move with the highest priority is used
+%Then that move gets a permanent -3 penalty to priority to encourage variety
+
+#new:Script $Script_TakeTurn_DarkMario 
+{
+	Call  UseIdleAnimation  ( .Actor:Self .False )
+	Call  EnableIdleScript  ( .Actor:Self .False )
+    %Jump Moves
+	ExecWait $Script_Jump_DarkMario
+
+	ExecWait $Script_PowerBounce_DarkMario
+
+	ExecWait $Script_Multibounce_DarkMario
+
+	%Hammer Moves
+	ExecWait $Script_Hammer_DarkMario
+
+	ExecWait $Script_MegaQuake_DarkMario
+
+	ExecWait $Script_DualHammer_DarkMario
+
+	Call  UseIdleAnimation  ( .Actor:Self .True )
+	Call  EnableIdleScript  ( .Actor:Self .True )
+    Return
+    End
+}
+
+#new:Script $Script_Jump_Startup
+{
+	%run up
+	Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+	Call  SetTargetActor    ( .Actor:Self .Actor:Player )
+	Call  SetGoalToTarget   ( .Actor:Self )
+	Call  UseBattleCamPreset    ( 0000003F )
+	Call  BattleCamTargetActor  ( .Actor:Self )	
+	Call  AddGoalPos        ( .Actor:Self 00000032 00000000 00000000 )
+	Call  SetActorSpeed ( .Actor:Self *Fixed[8.0] )
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Run )
+	Call  RunToGoal ( .Actor:Self 00000000 .False )
+	%start jump animations
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Crouch )
+	Wait  4`
+	Return
+	End
+}
+
+#new:Script $Script_RunHome
+{
+	Call  SetGoalToHome ( .Actor:Self )
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Run )
+	Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+	Call  RunToGoal ( .Actor:Self 00000000 .False )	
+	Call  UseBattleCamPreset    ( 00000002 )
+	Return
+	End
+}
+
+#new:Script $Script_Jump_DarkMario
+{
+	ExecWait $Script_Jump_Startup
+	%jump time
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Jump )
+	Call  SetTargetActor	( .Actor:Self .Actor:Player )
+	Call  SetGoalToTarget   ( .Actor:Self )
+	Call  SetActorJumpGravity ( .Actor:Self *Fixed[1.0] ) %same as real mario?
+	Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:0 00000000 00000001 00000010 )
+	Switch *Var0
+		CaseOR  ==  .HitResult:Miss % 6
+		CaseOR  ==  .HitResult:Lucky % 5
+			Call	GetGoalPos	( .Actor:Self *Var1 *Var2 *Var3 )
+			Sub *Var1 6`
+			Call	SetGoalPos 	( .Actor:Self *Var1 0` *Var3 )
+			Call  JumpToGoal    ( .Actor:Self 00000015 .False .True .True )	
+			If  *VarA  ==  .HitResult:Lucky % 5
+				Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:TriggerLucky 00000000 00000000 00000000 )
+			EndIf
+			Call  PlaySoundAtActor  ( .Actor:Self 00000162 )
+			Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Faceplant )
+			Wait  20`
+			Call  SetGoalToHome ( .Actor:Self )
+			Call  SetActorRotation  ( .Actor:Self 00000000 180` 00000000 )
+			Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Run )
+			Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+			Call  RunToGoal ( .Actor:Self 00000000 .False )	
+			Call  SetActorRotation  ( .Actor:Self 00000000 00000000 00000000 )
+			Return
+		EndCaseGroup
+	EndSwitch
+	Thread
+		Wait 10`
+		Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Falling )
+	EndThread
+	Call  JumpToGoal    ( .Actor:Self 00000015 .False .True .True )	
+	Call	SetGoalToTarget	( .Actor:Self )
+	Switch *VarC
+		Case == 00000000
+			Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:Jump 00000000 00000000 .Damage:NormalJump 00000000 )
+		Case == 00000001
+            Call  GetActorPos       ( .Actor:Player *Var0 *Var1 *Var2 )
+			Call  PlaySoundAtActor  ( .Actor:Self 0000210C )
+			Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:IgnoreDefense|Jump 00000000 00000000 .Damage:PenetrateJump 00000000 )
+		Case == 00000002			
+			Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:Jump 00000000 00000000 .Damage:MegaJump 00000000 )
+			ExecWait $Script_MegaShake
+			Goto 4
+	EndSwitch
+	%Jump again
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Jump )
+	Thread
+		Wait 10`
+		Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Falling )
+	EndThread
+	%spin around?
+	Thread %25 frames
+		Loop     21`
+			Add  *Var3  75` %120
+			If  *Var3  >  360`
+				Sub  *Var3  360`
+			EndIf
+			Call     SetActorRotation 	( .Actor:Self 00000000 *Var3 00000000 )
+			Wait     00000001 
+		EndLoop
+    	Call     SetActorRotation 	( .Actor:Self 00000000 00000000 00000000 )
+  		Call     SetActorRotationOffset 	( .Actor:Self 00000000 00000000 00000000 )
+	EndThread
+	Call  JumpToGoal    ( .Actor:Self 00000015 .False .True .True )		
+	Call	SetGoalToTarget	( .Actor:Self )
+	Switch *VarC
+		Case == 00000000
+			Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:Jump 00000000 00000000 .Damage:NormalJump 00000000 )
+		Case == 00000001
+			Call  GetActorPos       ( .Actor:Player *Var0 *Var1 *Var2 )
+			Call  PlaySoundAtActor  ( .Actor:Self 0000210C )
+			Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:IgnoreDefense|Jump 00000000 00000000 .Damage:PenetrateJump 00000000 )
+	EndSwitch
+	%go home
+	Label 4
+	Call  SetActorRotation  ( .Actor:Self 00000000 00000000 00000000 )
+	Call  SetGoalToHome   ( .Actor:Self )
+	Call  AddGoalPos        ( .Actor:Self -35` 00000000 00000000 )
+	Call  GetGoalPos		( .Actor:Self *Var1 *Var2 *Var3 )
+	Call  SetGoalPos		( .Actor:Self *Var1 0` *Var3 )
+	Call  SetActorJumpGravity ( .Actor:Self *Fixed[1.0] ) %same as real mario?
+	Call  JumpToGoal    ( .Actor:Self 00000019 .False .True .True )	
+	ExecWait $Script_RunHome
+	Return
+	End
+}
+
+/%
+
+#new:Script $Script_Multibounce_DarkMario
+{
+	ExecWait $Script_Jump_Startup
+	%jump time
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Jump )
+	Call  SetTargetActor	( .Actor:Self .Actor:Player )
+	Call  SetGoalToTarget   ( .Actor:Self )
+	Call  SetActorJumpGravity ( .Actor:Self *Fixed[1.0] ) %same as real mario?
+	Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:0 00000000 00000001 00000010 )
+	Switch *Var0
+		CaseOR  ==  .HitResult:Miss % 6
+		CaseOR  ==  .HitResult:Lucky % 5
+			Call	GetGoalPos	( .Actor:Self *Var1 *Var2 *Var3 )
+			Sub *Var1 6`
+			Call	SetGoalPos 	( .Actor:Self *Var1 0` *Var3 )
+			Call  JumpToGoal    ( .Actor:Self 00000015 .False .True .True )	
+			If  *VarA  ==  .HitResult:Lucky % 5
+				Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:TriggerLucky 00000000 00000000 00000000 )
+			EndIf
+			Call  PlaySoundAtActor  ( .Actor:Self 00000162 )
+			Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Faceplant )
+			Wait  20`
+			Call  SetGoalToHome ( .Actor:Self )
+			Call  SetActorRotation  ( .Actor:Self 00000000 180` 00000000 )
+			Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Run )
+			Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+			Call  RunToGoal ( .Actor:Self 00000000 .False )	
+			Call  SetActorRotation  ( .Actor:Self 00000000 00000000 00000000 )
+			Return
+		EndCaseGroup
+	EndSwitch
+	Call  JumpToGoal    ( .Actor:Self 00000015 .False .True .True )	
+	Thread
+		Wait 10`
+		Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Falling )
+	EndThread
+	Call  GetActorVar	( .Actor:Self 00000001 *Var2 ) 
+	Add *Var2 4 %base jump damage of 4	
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call  SetActorVar	( .Actor:Self 00000000 00000001 )
+	Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:Jump 00000000 00000000 *Var2 00000000 )
+	%Jump again
+	Call  SetTargetActor	( .Actor:Self .Actor:Partner )
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Jump )
+	Thread
+		Wait 10`
+		Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Falling )
+	EndThread
+	%spin around?
+	Thread %25 frames
+		Loop     21`
+			Add  *Var3  75` %120
+			If  *Var3  >  360`
+				Sub  *Var3  360`
+			EndIf
+			Call     SetActorRotation 	( .Actor:Self 00000000 *Var3 00000000 )
+			Wait     00000001 
+		EndLoop
+    	Call     SetActorRotation 	( .Actor:Self 00000000 00000000 00000000 )
+  		Call     SetActorRotationOffset 	( .Actor:Self 00000000 00000000 00000000 )
+	EndThread
+	Call  JumpToGoal    ( .Actor:Self 00000015 .False .True .True )		
+	Call  GetActorVar	( .Actor:Self 00000001 *Var2 ) 
+	Add *Var2 4 %base jump damage of 4	
+	Div *Var2 3 %reduce partner damage so you don't have to take way too much damage
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call  SetActorVar	( .Actor:Self 00000000 00000002 )
+	Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:Jump 00000000 00000000 *Var2 00000020 )	
+	%go home
+	Call  SetActorRotation  ( .Actor:Self 00000000 00000000 00000000 )
+	Call  SetGoalToHome   ( .Actor:Self )
+	Call  AddGoalPos        ( .Actor:Self -35` 00000000 00000000 )
+	Call  GetGoalPos		( .Actor:Self *Var1 *Var2 *Var3 )
+	Call  SetGoalPos		( .Actor:Self *Var1 0` *Var3 )
+	Call  SetActorJumpGravity ( .Actor:Self *Fixed[1.0] ) %same as real mario?
+	Call  JumpToGoal    ( .Actor:Self 00000019 .False .True .True )	
+	ExecWait $Script_RunHome
+	Return
+	End
+}
+
+#new:Script $Script_PowerBounce_DarkMario
+{
+	ExecWait $Script_Jump_Startup
+	%jump time
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Jump )
+	Call  SetGoalToTarget   ( .Actor:Self )
+	Call  SetActorJumpGravity ( .Actor:Self *Fixed[1.0] ) %same as real mario?
+	Call  EnemyTestTarget   ( .Actor:Self *VarB ~Flags:DamageType:0 00000000 00000001 00000010 )
+	Switch *VarB
+		CaseOR  ==  .HitResult:Miss % 6
+		CaseOR  ==  .HitResult:Lucky % 5
+			Call	GetGoalPos	( .Actor:Self *Var1 *Var2 *Var3 )
+			Sub *Var1 6`
+			Call	SetGoalPos 	( .Actor:Self *Var1 0` *Var3 )
+			Call  JumpToGoal    ( .Actor:Self 00000015 .False .True .True )	
+			If  *VarA  ==  .HitResult:Lucky % 5
+				Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:TriggerLucky 00000000 00000000 00000000 )
+			EndIf
+			Call  PlaySoundAtActor  ( .Actor:Self 00000162 )
+			Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Faceplant )
+			Wait  20`
+			Call  SetGoalToHome ( .Actor:Self )
+			Call  SetActorRotation  ( .Actor:Self 00000000 180` 00000000 )
+			Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Run )
+			Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+			Call  RunToGoal ( .Actor:Self 00000000 .False )	
+			Call  SetActorRotation  ( .Actor:Self 00000000 00000000 00000000 )
+			Return
+		EndCaseGroup
+	EndSwitch
+	Call	 SetActorVar	( .Actor:Self 0000000C 00000000 )
+	Call	 SetActorVar	( .Actor:Self 0000000D 00000000 )
+	Call  JumpToGoal    ( .Actor:Self 00000015 .False .True .True )	
+	Thread
+		Wait 10`
+		Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Falling )
+	EndThread
+	Call  GetActorVar	( .Actor:Self 00000001 *Var2 ) 
+	Add *Var2 4 %base jump damage of 4
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call  SetActorVar	( .Actor:Self 00000000 00000001 )
+	Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:Jump 00000000 00000000 *Var2 00000000 )
+	%Jump again
+	Label 0
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Jump )
+	Thread
+		Wait 10`
+		Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Falling )
+	EndThread
+	%spin around?
+	Thread %25 frames
+		Loop     21`
+			Add  *Var3  75` %120
+			If  *Var3  >  360`
+				Sub  *Var3  360`
+			EndIf
+			Call     SetActorRotation 	( .Actor:Self 00000000 *Var3 00000000 )
+			Wait     00000001 
+		EndLoop
+    	Call     SetActorRotation 	( .Actor:Self 00000000 00000000 00000000 )
+  		Call     SetActorRotationOffset 	( .Actor:Self 00000000 00000000 00000000 )
+	EndThread
+	Call  JumpToGoal    ( .Actor:Self 00000015 .False .True .True )		
+	Call  GetActorVar	( .Actor:Self 00000001 *Var2 ) 
+	Add *Var2 4 %base jump damage of 4	
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call  GetActorVar	( .Actor:Self 00000000 *VarE )
+	Add   *VarE 1`
+	Call  SetActorVar	( .Actor:Self 00000000 *VarE )
+	Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:Jump 00000000 00000000 *Var2 00000020 )	
+	Call     GetBattleFlags ( *VarE )
+	If  *VarE  &  80000000 
+		Call     GetActorVar 	( .Actor:Self 0000000C *VarD )
+		Add *VarD 1
+		Call	 SetActorVar	( .Actor:Self 0000000C *VarD )
+	EndIf	
+	%The switch doesn't seem to work unless you do block the attack, but we want to keep going if not blocked
+	If *VarB == .HitResult:Immune
+		Goto 	1
+	EndIf
+	Call	 GetActorHP ( .Actor:Player *VarC )
+	If *VarC == 0 %attacking while you're dead does nothing
+		Goto 	1
+	EndIf
+	Call     GetBattleFlags ( *VarE )
+	If  *VarE  &  80000000 
+		Call     GetActorVar 	( .Actor:Self 0000000C *VarD )
+		Add *VarD 1
+		Call	 SetActorVar	( .Actor:Self 0000000C *VarD )
+	EndIf
+	Call     GetActorVar 	( .Actor:Self 0000000D *VarF )
+	Add *VarF 1
+	Call	 SetActorVar	( .Actor:Self 0000000D *VarF )
+	If *VarD >= 2 %block 2 of the repeating hits
+		If *VarF > 1
+			Goto     1 
+		EndIf
+	EndIf
+	If *VarF > 3` %5 hits maximum (but initial hit is not counted here!)
+		Goto 1
+	EndIf
+	Call     GetLastDamage 	( .Actor:Player *VarE )
+	If  *VarE  ==  00000000 %if it isn't working, don't keep going (but do 3 hits minimum)
+		Call     GetActorVar 	( .Actor:Self 0000000D *VarF )
+		If *VarF > 1`
+			Goto     1 
+		EndIf
+	EndIf
+	Goto  0 %if none of the above conditions are met, keep going!
+	%
+	Label 1
+	%go home?
+	Call  SetActorRotation  ( .Actor:Self 00000000 00000000 00000000 )
+	Call  SetGoalToHome   ( .Actor:Self )
+	Call  AddGoalPos        ( .Actor:Self -35` 00000000 00000000 )
+	Call  GetGoalPos		( .Actor:Self *Var1 *Var2 *Var3 )
+	Call  SetGoalPos		( .Actor:Self *Var1 0` *Var3 )
+	Call  SetActorJumpGravity ( .Actor:Self *Fixed[1.0] ) %same as real mario?
+	Call  JumpToGoal    ( .Actor:Self 00000019 .False .True .True )	
+	ExecWait $Script_RunHome
+	Return
+	End
+}
+
+%/
+
+#new:Script $Script_Hammer_DarkMario
+{
+	%run up
+	Call  SetTargetActor    ( .Actor:Self .Actor:Player )
+	Call  SetGoalToTarget   ( .Actor:Self )
+	Call  UseBattleCamPreset    ( 0000003F )
+	Call  BattleCamTargetActor  ( .Actor:Self )	
+	Call  AddGoalPos        ( .Actor:Self 25` 00000000 00000000 )
+	Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Run )
+	Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+	Call  RunToGoal ( .Actor:Self 00000000 .False )
+	%start hammer animations
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerWindup )
+	Wait  8`
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerHold )
+	Wait  32` %45 is too long
+	Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:0 00000000 00000001 00000010 )
+	Switch *Var0
+		CaseOR  ==  .HitResult:Miss % 6
+		CaseOR  ==  .HitResult:Lucky % 5
+			Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerPreHit )
+			Wait  3`
+			Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerHit )
+			Goto 0
+		EndCaseGroup
+	EndSwitch
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerPreHit )
+	Call  PlaySoundAtActor  ( .Actor:Self 00002116 )
+	Wait  3`
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerHit )
+	Wait  5`
+	Call  PlaySoundAtActor  ( .Actor:Self 00002119 )	
+	Thread
+		Call  ShakeCam  ( .Cam:Battle 00000000 0000000A *Fixed[2.1] )
+	EndThread
+	Call  PlaySoundAtActor  ( .Actor:Self 0000010E )
+	Switch *VarC
+		Case == 00000000
+			Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:NoContact|Smash 00000000 00000000 .Damage:NormalSmash 00000020 )
+        Case == 00000001
+			Call  GetActorPos       ( .Actor:Player *Var0 *Var1 *Var2 )
+			Call  PlaySoundAtActor  ( .Actor:Self 0000210C )
+			Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:IgnoreDefense|Smash 00000000 00000000 .Damage:PenetrateSmash 00000020 )		
+		Case == 00000002
+			Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:NoContact|Smash 00000000 00000000 .Damage:MegaSmash 00000020 )	
+			ExecWait $Script_MegaShake
+	EndSwitch
+	Label 0
+	Wait 20`
+	%time to go home
+	Call  SetActorRotation  ( .Actor:Self 00000000 180` 00000000 )
+	ExecWait $Script_RunHome
+	Call  SetActorRotation  ( .Actor:Self 00000000 00000000 00000000 )
+	Return
+	End
+}
+
+/%
+
+#new:Script $Script_MegaQuake_DarkMario
+{
+	%run up
+	Call  SetTargetActor    ( .Actor:Self .Actor:Player )
+	Call  SetGoalToHome   ( .Actor:Self )
+	Call  UseBattleCamPreset    ( 0000003F )
+	Call  BattleCamTargetActor  ( .Actor:Self )	
+	Call  AddGoalPos        ( .Actor:Self -40` 00000000 00000000 )
+	Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Run )
+	Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+	Call  RunToGoal ( .Actor:Self 00000000 .False )
+	%start hammer animations
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerWindup )
+	Wait  8`
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerHold )
+	Wait  45`
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerPreHit )
+	Call  PlaySoundAtActor  ( .Actor:Self 00002116 )
+	Wait  3`
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerHit )
+	Wait  5`
+	Call  PlaySoundAtActor  ( .Actor:Self 00002119 )	
+	%Effects time
+	Thread
+    	Wait  8`
+    	Call  GetActorPos   ( .Actor:Self *Var0 *Var1 *Var2 )
+    	Add   *Var0  -24`
+    	Add   *Var1  -10`
+    	Call  PlayEffect    ( ~FX:SmokeImpact:Small *Var0 *Var1 *Var2 0000003C 00000008 00000000 0000001E 00000000 00000000 00000000 00000000 00000000 )
+    	Wait  2`
+    	Call  PlayEffect    ( ~FX:SmokeImpact:Small *Var0 *Var1 *Var2 0000003C 00000008 00000021 0000001E 00000000 00000000 00000000 00000000 00000000 )
+		Wait  2`
+		Call  PlayEffect    ( ~FX:SmokeImpact:Small *Var0 *Var1 *Var2 0000003C 00000008 00000042 0000001E 00000000 00000000 00000000 00000000 00000000 )
+	EndThread
+	Call  StartRumble   ( 0000000B )
+	Thread
+		Call  ShakeCam  ( .Cam:Battle 00000000 00000002 *Fixed[0.3] )
+		Call  ShakeCam  ( .Cam:Battle 00000000 00000005 *Fixed[1.5] )
+		Call  ShakeCam  ( .Cam:Battle 00000000 0000000A *Fixed[3.0] )
+		Call  ShakeCam  ( .Cam:Battle 00000000 00000005 *Fixed[1.5] )
+		Call  ShakeCam  ( .Cam:Battle 00000000 00000003 *Fixed[1.05] )
+		Call  ShakeCam  ( .Cam:Battle 00000000 00000004 *Fixed[0.6] )
+		Call  ShakeCam  ( .Cam:Battle 00000000 00000006 *Fixed[0.15] )
+		Call  ShakeCam  ( .Cam:Battle 00000000 00000004 *Fixed[0.07519531] )
+ 	EndThread
+ 	Thread
+		Call  GetActorPos   ( .Actor:Self *Var0 *Var1 *Var2 )
+		Add   *Var0  00000018
+		Add   *Var1  0000000A
+		Call  PlayEffect    ( ~FX:SmokeImpact:Large *Var0 *Var1 *Var2 00000048 00000008 00000000 0000001E 00000000 00000000 00000000 00000000 00000000 )
+		Wait  5`
+		Call  PlayEffect    ( ~FX:SmokeImpact:Large *Var0 *Var1 *Var2 00000048 00000008 00000018 0000001E 00000000 00000000 00000000 00000000 00000000 )
+    	Wait  5`
+  		Call  PlayEffect    ( ~FX:SmokeImpact:Large *Var0 *Var1 *Var2 00000048 00000008 00000030 0000001E 00000000 00000000 00000000 00000000 00000000 )
+		Wait  5`
+		Call  PlayEffect    ( ~FX:SmokeImpact:Large *Var0 *Var1 *Var2 00000048 00000008 00000048 0000001E 00000000 00000000 00000000 00000000 00000000 )
+	EndThread
+ 	Thread
+ 		Wait  10`
+		Call  PlayEffect    ( ~FX:ShockWave:LargeWhite *Var0 *Var1 *Var2 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 )
+	EndThread
+ 	Wait  15`
+  	SetF  *Var6  *Fixed[0.0]
+  	Loop  0000000A
+		Set   *Var4  *Var3
+		Set   *Var5  *Var2
+		AddF  *Var6  *Fixed[36.0]
+		Call  AddVectorPolar    ( *Var4 *Var5 *Fixed[300.0] *Var6 )
+		Set   *VarA  *VarF
+		Call  PlayEffect        ( ~FX:Lightning *Var3 00000001 *Var2 *Var4 00000001 *Var5 *Fixed[4.0] 0000001E 00000000 00000000 00000000 00000000 )
+		Set   *VarF  *VarA
+	EndLoop
+	Wait  10`
+	Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:0 00000000 00000001 00000010 )
+	Switch *Var0
+		CaseOR  ==  .HitResult:Miss % 6
+		CaseOR  ==  .HitResult:Lucky % 5
+			Goto 2
+		EndCaseGroup
+	EndSwitch
+	Call  PlaySoundAtActor  ( .Actor:Self 0000010E )
+	Call  GetActorVar	( .Actor:Self 00000001 *Var2 ) 
+	Call  SetTargetActor    ( .Actor:Self .Actor:Player )
+	Call	 SetGoalToTarget ( .Actor:Self )
+	Add *Var2 8 																					%base hammer damage of 8
+	Call  SetActorVar	( .Actor:Self 00000000 00000001 )		
+	Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:NoContact|Smash 00000000 00000000 *Var2 00000020 )	
+	Label 2
+	Wait 	 00000004
+	Call 	 SetTargetActor ( .Actor:Self .Actor:Partner )
+	Call	 SetGoalToTarget ( .Actor:Self )
+	Call	 GetActorFlags ( .Actor:Partner *VarE )
+	If *VarE & 00000200 %flying partners are immune
+		Goto 3
+	EndIf
+	Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:0 00000000 00000001 00000010 )
+	Switch *Var0
+		CaseOR  ==  .HitResult:Miss % 6
+		CaseOR  ==  .HitResult:Lucky % 5
+			Goto 3
+		EndCaseGroup
+	EndSwitch
+	Call  GetActorVar	( .Actor:Self 00000000 *VarD )		
+	Add   *VarD 1`
+	Call  SetActorVar	( .Actor:Self 00000000 *VarD )		
+	If *VarE == 1
+		Call     EnemyDamageTarget 	( .Actor:Self *VarF 00000000 00000000 00000000 00000004 00000020 ) %gg
+	Else
+		Call     EnemyDamageTarget 	( .Actor:Self *VarF 00000000 00000000 00000000 00000003 00000020 )
+	EndIf
+	Label 3
+	Wait 20`
+	%time to go home
+	Call  SetActorRotation  ( .Actor:Self 00000000 180` 00000000 )
+	ExecWait $Script_RunHome
+	Call  SetActorRotation  ( .Actor:Self 00000000 00000000 00000000 )
+	Return
+	End
+}
+
+#new:Script $Script_DualHammer_DarkMario
+{
+	%run up
+	Call  SetTargetActor    ( .Actor:Self .Actor:Player )
+	Call  SetGoalToTarget   ( .Actor:Self )
+	Call  UseBattleCamPreset    ( 0000003F )
+	Call  BattleCamTargetActor  ( .Actor:Self )	
+	Call  AddGoalPos        ( .Actor:Self 25` 00000000 00000000 )
+	Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:Run )
+	Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+	Call  RunToGoal ( .Actor:Self 00000000 .False )
+	%start hammer animations
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerWindup )
+	Wait  8`
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerHold )
+	Wait  32` %45 is too long
+	Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:0 00000000 00000001 00000010 )
+	Switch *Var0
+		CaseOR  ==  .HitResult:Miss % 6
+		CaseOR  ==  .HitResult:Lucky % 5
+			Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerPreHit )
+			Wait  3`
+			Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerHit )
+			Goto 0
+		EndCaseGroup
+	EndSwitch
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerPreHit )
+	Call  PlaySoundAtActor  ( .Actor:Self 00002116 )
+	Wait  3`
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerHit )
+	Wait  5`
+	Call  PlaySoundAtActor  ( .Actor:Self 00002119 )	
+	Thread
+		Call  ShakeCam  ( .Cam:Battle 00000000 0000000A *Fixed[2.1] )								%blam
+	EndThread
+	Call  PlaySoundAtActor  ( .Actor:Self 0000010E )
+	Call  GetActorVar	( .Actor:Self 00000001 *Var2 ) 
+	Add *Var2 8 																					%base hammer damage of 8
+	Call  SetActorVar	( .Actor:Self 00000000 00000001 )		
+	Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:NoContact|Smash 00000000 00000000 *Var2 00000020 )	
+	Wait 14`
+	%2nd Hit
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerWindup )
+	Wait  8`
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerHold )
+	Wait  32` %45 is too long
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerPreHit )
+	Call  PlaySoundAtActor  ( .Actor:Self 00002116 )
+	Wait  3`
+	Call  SetAnimation      ( .Actor:Self 00000001 .Anim:HammerHit )
+	Wait  5`
+	Call  PlaySoundAtActor  ( .Actor:Self 00002119 )	
+	Thread
+		Call  ShakeCam  ( .Cam:Battle 00000000 0000000A *Fixed[2.1] )								%blam
+	EndThread
+	Call  PlaySoundAtActor  ( .Actor:Self 0000010E )
+	Call  GetActorVar	( .Actor:Self 00000001 *Var2 ) 
+	Add *Var2 10` 																					%base hammer damage of 10
+	Call  SetActorVar	( .Actor:Self 00000000 00000002 )		
+	Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:NoContact|Smash 00000000 00000000 *Var2 00000020 )	
+	Label 0
+	Wait 20`
+	%time to go home
+	Call  SetActorRotation  ( .Actor:Self 00000000 180` 00000000 )
+	ExecWait $Script_RunHome
+	Call  SetActorRotation  ( .Actor:Self 00000000 00000000 00000000 )
+	Return
+	End
+}
+
+%/

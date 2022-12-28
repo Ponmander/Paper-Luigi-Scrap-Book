@@ -1,6 +1,6 @@
 # Build artifacts
-mod.cfg
-temp
+#mod.cfg
+#temp
 build
 cache
 /out
@@ -10,5 +10,9 @@ cache
 /editor
 
 # Original game data
-src
-raw
+#src
+#raw
+*.bidx
+*.bin
+*.midx
+mod.cfg
