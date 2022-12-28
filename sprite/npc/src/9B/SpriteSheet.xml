@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SpriteSheet maxComponents="1" paletteGroups="4">
+<SpriteSheet maxComponents="1" paletteGroups="1">
 	<PaletteList>
-		<Palette id="0" name="Palette_00" src="Raster_30.pal.png"/>
-		<Palette id="1" src="Palette_01.png"/>
-		<Palette id="2" src="Palette_02.png"/>
-		<Palette id="3" src="Palette_03.png"/>
-		<Palette id="4" name="Palette_00a" src="Palette_00.png"/>
+		<Palette id="0" name="RoboMario" src="Raster_30.pal.png"/>
 	</PaletteList>
 	<RasterList>
 		<Raster id="0" name="Raster_30" palette="0" src="Raster_30.png"/>
