@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SpriteSheet maxComponents="1" paletteGroups="1">
 	<PaletteList>
-		<Palette id="0" src="Palette_00.png"/>
+		<Palette id="0" name="Palette_00" src="Raster_20.pal.png"/>
 		<Palette id="1" src="Palette_01.png"/>
 		<Palette id="2" src="Palette_02.png"/>
 		<Palette id="3" src="Palette_03.png"/>
@@ -35,6 +35,14 @@
 		<Raster id="18" palette="0" src="Raster_18.png"/>
 		<Raster id="19" palette="0" src="Raster_19.png"/>
 		<Raster id="1A" palette="0" src="Raster_1A.png"/>
+		<Raster id="1B" name="Raster_20" palette="0" src="Raster_20.png"/>
+		<Raster id="1C" name="Raster_21" palette="0" src="Raster_21.png"/>
+		<Raster id="1D" name="Raster_22" palette="0" src="Raster_22.png"/>
+		<Raster id="1E" name="Raster_23" palette="0" src="Raster_23.png"/>
+		<Raster id="1F" name="Raster_24" palette="0" src="Raster_24.png"/>
+		<Raster id="20" name="Raster_31" palette="0" src="Raster_31.png"/>
+		<Raster id="21" name="Raster_32" palette="0" src="Raster_32.png"/>
+		<Raster id="22" name="Raster_33" palette="0" src="Raster_33.png"/>
 	</RasterList>
 	<AnimationList>
 		<Animation name="Anim_00">
@@ -45,9 +53,37 @@
 			</Component>
 		</Animation>
 		<Animation name="Anim_01">
-			<Component name="Comp_00" xyz="6,0,0">
-				<Command val="100D"/>
+			<Component name="Body" xyz="-4,-10,0">
+				<Command val="1020"/>
 				<Command val="2"/>
+				<Command val="1020"/>
+				<Command val="30"/>
+				<Command val="1021"/>
+				<Command val="C"/>
+				<Command val="1022"/>
+				<Command val="8"/>
+				<Command val="1021"/>
+				<Command val="6"/>
+				<Command val="2002"/>
+			</Component>
+			<Component name="Head" xyz="0,13,0">
+				<Command val="101B"/>
+				<Command val="30"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="8"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="E"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="4"/>
 				<Command val="2000"/>
 			</Component>
 		</Animation>
