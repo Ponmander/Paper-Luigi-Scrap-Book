@@ -43,6 +43,13 @@
 		<Raster id="22" name="Raster_22" palette="0" src="Raster_22.png"/>
 		<Raster id="23" name="Raster_23" palette="0" src="Raster_23.png"/>
 		<Raster id="24" name="Raster_24" palette="0" src="Raster_24.png"/>
+		<Raster id="25" name="Raster_25" palette="0" src="Raster_25.png"/>
+		<Raster id="26" name="Raster_26" palette="0" src="Raster_26.png"/>
+		<Raster id="27" name="Raster_27" palette="0" src="Raster_27.png"/>
+		<Raster id="28" name="Raster_28" palette="0" src="Raster_28.png"/>
+		<Raster id="29" name="Raster_29" palette="0" src="Raster_29.png"/>
+		<Raster id="2A" name="Raster_30" palette="0" src="Raster_30.png"/>
+		<Raster id="2B" name="Raster_31" palette="0" src="Raster_31.png"/>
 	</RasterList>
 	<AnimationList>
 		<Animation name="Anim_00">
