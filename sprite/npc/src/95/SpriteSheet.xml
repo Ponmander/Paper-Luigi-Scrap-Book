@@ -4,6 +4,7 @@
 		<Palette id="0" name="Palette_00" src="Raster_21.pal.png"/>
 		<Palette id="1" src="Palette_01.png"/>
 		<Palette id="2" name="Original" src="Palette_00.png"/>
+		<Palette id="3" name="Raster_2A" src="Raster_2A.pal.png"/>
 	</PaletteList>
 	<RasterList>
 		<Raster id="0" palette="2" src="Raster_00.png"/>
@@ -50,35 +51,14 @@
 		<Raster id="29" name="Raster_29" palette="0" src="Raster_29.png"/>
 		<Raster id="2A" name="Raster_30" palette="0" src="Raster_30.png"/>
 		<Raster id="2B" name="Raster_31" palette="0" src="Raster_31.png"/>
+		<Raster id="2C" name="Raster_2A" palette="3" src="Raster_2A.png"/>
+		<Raster id="2D" name="Raster_2B" palette="3" src="Raster_2B.png"/>
+		<Raster id="2E" name="Raster_32" palette="3" src="Raster_32.png"/>
+		<Raster id="2F" name="Raster_33" palette="3" src="Raster_33.png"/>
 	</RasterList>
 	<AnimationList>
-		<Animation name="Anim_00">
-			<Component name="Comp_00" xyz="0,-2,0">
-				<Command val="1000"/>
-				<Command val="2"/>
-				<Command val="2000"/>
-			</Component>
-		</Animation>
-		<Animation name="Anim_01">
-			<Component name="Comp_00" xyz="0,-2,0">
-				<Command val="8101"/>
-				<Command val="1000"/>
-				<Command val="5A"/>
-				<Command val="101B"/>
-				<Command val="4"/>
-				<Command val="1000"/>
-				<Command val="2"/>
-				<Command val="7003"/>
-				<Command val="1"/>
-				<Command val="1000"/>
-				<Command val="96"/>
-				<Command val="101B"/>
-				<Command val="4"/>
-				<Command val="1000"/>
-				<Command val="5A"/>
-				<Command val="2000"/>
-			</Component>
-			<Component name="Comp_01" xyz="0,0,0">
+		<Animation name="Float Blink">
+			<Component name="Float" xyz="0,0,0">
 				<Command val="3001"/>
 				<Command val="0"/>
 				<Command val="0"/>
@@ -121,10 +101,71 @@
 				<Command val="6"/>
 				<Command val="2000"/>
 			</Component>
+			<Component name="Body" xyz="0,-2,0">
+				<Command val="8100"/>
+				<Command val="1021"/>
+				<Command val="5A"/>
+				<Command val="1025"/>
+				<Command val="4"/>
+				<Command val="1021"/>
+				<Command val="2"/>
+				<Command val="7003"/>
+				<Command val="1"/>
+				<Command val="1021"/>
+				<Command val="96"/>
+				<Command val="1025"/>
+				<Command val="4"/>
+				<Command val="1021"/>
+				<Command val="5A"/>
+				<Command val="2000"/>
+			</Component>
 		</Animation>
-		<Animation name="Anim_02">
-			<Component name="Comp_00" xyz="0,-2,0">
-				<Command val="8101"/>
+		<Animation name="Move">
+			<Component name="Float" xyz="0,0,0">
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="8"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="0"/>
+				<Command val="8"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="8"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFD"/>
+				<Command val="0"/>
+				<Command val="8"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Body" xyz="0,-2,0">
+				<Command val="8100"/>
 				<Command val="1021"/>
 				<Command val="6"/>
 				<Command val="1022"/>
@@ -135,64 +176,9 @@
 				<Command val="6"/>
 				<Command val="2000"/>
 			</Component>
-			<Component name="Comp_01" xyz="0,0,0">
-				<Command val="3000"/>
-				<Command val="0"/>
-				<Command val="0"/>
-				<Command val="0"/>
-				<Command val="8"/>
-				<Command val="3000"/>
-				<Command val="0"/>
-				<Command val="1"/>
-				<Command val="0"/>
-				<Command val="6"/>
-				<Command val="3000"/>
-				<Command val="0"/>
-				<Command val="3"/>
-				<Command val="0"/>
-				<Command val="8"/>
-				<Command val="3000"/>
-				<Command val="0"/>
-				<Command val="2"/>
-				<Command val="0"/>
-				<Command val="6"/>
-				<Command val="3000"/>
-				<Command val="0"/>
-				<Command val="0"/>
-				<Command val="0"/>
-				<Command val="8"/>
-				<Command val="3000"/>
-				<Command val="0"/>
-				<Command val="FFFF"/>
-				<Command val="0"/>
-				<Command val="6"/>
-				<Command val="3000"/>
-				<Command val="0"/>
-				<Command val="FFFD"/>
-				<Command val="0"/>
-				<Command val="8"/>
-				<Command val="3000"/>
-				<Command val="0"/>
-				<Command val="FFFE"/>
-				<Command val="0"/>
-				<Command val="6"/>
-				<Command val="2000"/>
-			</Component>
 		</Animation>
-		<Animation name="Anim_03">
-			<Component name="Comp_00" xyz="0,-2,0">
-				<Command val="8101"/>
-				<Command val="1000"/>
-				<Command val="4"/>
-				<Command val="1001"/>
-				<Command val="4"/>
-				<Command val="1002"/>
-				<Command val="4"/>
-				<Command val="1003"/>
-				<Command val="4"/>
-				<Command val="2000"/>
-			</Component>
-			<Component name="Comp_01" xyz="0,0,0">
+		<Animation name="Move (Fast)">
+			<Component name="Float" xyz="0,0,0">
 				<Command val="3000"/>
 				<Command val="0"/>
 				<Command val="0"/>
@@ -232,24 +218,24 @@
 				<Command val="0"/>
 				<Command val="FFFE"/>
 				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Body" xyz="0,-2,0">
+				<Command val="8100"/>
+				<Command val="1021"/>
+				<Command val="4"/>
+				<Command val="1022"/>
+				<Command val="4"/>
+				<Command val="1023"/>
+				<Command val="4"/>
+				<Command val="1024"/>
 				<Command val="4"/>
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Anim_04">
-			<Component name="Comp_00" xyz="0,-2,0">
-				<Command val="8101"/>
-				<Command val="1012"/>
-				<Command val="2"/>
-				<Command val="1011"/>
-				<Command val="4"/>
-				<Command val="1012"/>
-				<Command val="2"/>
-				<Command val="1000"/>
-				<Command val="4"/>
-				<Command val="2000"/>
-			</Component>
-			<Component name="Comp_01" xyz="0,0,0">
+		<Animation name="Talk">
+			<Component name="Float" xyz="0,0,0">
 				<Command val="3000"/>
 				<Command val="0"/>
 				<Command val="0"/>
@@ -290,6 +276,100 @@
 				<Command val="FFFE"/>
 				<Command val="0"/>
 				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Body" xyz="0,-2,0">
+				<Command val="8100"/>
+				<Command val="1021"/>
+				<Command val="4"/>
+				<Command val="1026"/>
+				<Command val="2"/>
+				<Command val="1027"/>
+				<Command val="4"/>
+				<Command val="1026"/>
+				<Command val="2"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="Hurt">
+			<Component name="Float" xyz="0,0,0">
+				<Command val="3001"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="8"/>
+				<Command val="3001"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3001"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="0"/>
+				<Command val="8"/>
+				<Command val="3001"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3001"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="8"/>
+				<Command val="3001"/>
+				<Command val="0"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3001"/>
+				<Command val="0"/>
+				<Command val="FFFD"/>
+				<Command val="0"/>
+				<Command val="8"/>
+				<Command val="3001"/>
+				<Command val="0"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Body" xyz="0,-2,0">
+				<Command val="8100"/>
+				<Command val="102E"/>
+				<Command val="6"/>
+				<Command val="102F"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Crown" xyz="-2,35,1">
+				<Command val="8100"/>
+				<Command val="102D"/>
+				<Command val="3000"/>
+				<Command val="1"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFF8"/>
+				<Command val="6"/>
+				<Command val="102D"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFFB"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="Anim_00">
+			<Component name="Comp_00" xyz="0,-2,0">
+				<Command val="1021"/>
+				<Command val="2"/>
 				<Command val="2000"/>
 			</Component>
 		</Animation>
@@ -318,7 +398,7 @@
 		<Animation name="Anim_07">
 			<Component name="Comp_00" xyz="0,-2,0">
 				<Command val="8101"/>
-				<Command val="1008"/>
+				<Command val="1028"/>
 				<Command val="2"/>
 				<Command val="2000"/>
 			</Component>
@@ -369,26 +449,30 @@
 		<Animation name="Anim_08">
 			<Component name="Comp_00" xyz="0,-2,0">
 				<Command val="8101"/>
-				<Command val="1008"/>
+				<Command val="1028"/>
 				<Command val="30"/>
 				<Command val="3000"/>
 				<Command val="FFFF"/>
 				<Command val="3"/>
 				<Command val="0"/>
-				<Command val="1009"/>
+				<Command val="1029"/>
+				<Command val="2"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="102A"/>
 				<Command val="2"/>
 				<Command val="3000"/>
 				<Command val="FFFF"/>
 				<Command val="3"/>
 				<Command val="0"/>
-				<Command val="100A"/>
+				<Command val="102B"/>
 				<Command val="2"/>
 				<Command val="3000"/>
 				<Command val="FFFF"/>
-				<Command val="3"/>
+				<Command val="4"/>
 				<Command val="0"/>
-				<Command val="100B"/>
-				<Command val="2"/>
 				<Command val="2013"/>
 			</Component>
 			<Component name="Comp_01" xyz="0,0,0">
