@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SpriteSheet maxComponents="2" paletteGroups="2">
 	<PaletteList>
-		<Palette id="0" name="Palette_00" src="Raster_2A.pal.png"/>
+		<Palette id="0" name="KingBoo" src="Raster_2A.pal.png"/>
 	</PaletteList>
 	<RasterList>
-		<Raster id="0" name="Raster_21" palette="0" src="Raster_21.png"/>
-		<Raster id="1" name="Raster_22" palette="0" src="Raster_22.png"/>
-		<Raster id="2" name="Raster_23" palette="0" src="Raster_23.png"/>
-		<Raster id="3" name="Raster_24" palette="0" src="Raster_24.png"/>
-		<Raster id="4" name="Raster_25" palette="0" src="Raster_25.png"/>
-		<Raster id="5" name="Raster_26" palette="0" src="Raster_26.png"/>
-		<Raster id="6" name="Raster_27" palette="0" src="Raster_27.png"/>
-		<Raster id="7" name="Raster_28" palette="0" src="Raster_28.png"/>
-		<Raster id="8" name="Raster_29" palette="0" src="Raster_29.png"/>
-		<Raster id="9" name="Raster_30" palette="0" src="Raster_30.png"/>
-		<Raster id="A" name="Raster_31" palette="0" src="Raster_31.png"/>
-		<Raster id="B" name="Raster_32" palette="0" src="Raster_32.png"/>
-		<Raster id="C" name="Raster_33" palette="0" src="Raster_33.png"/>
-		<Raster id="D" name="Raster_34" palette="0" src="Raster_34.png"/>
-		<Raster id="E" name="Raster_35" palette="0" src="Raster_35.png"/>
-		<Raster id="F" name="Raster_36" palette="0" src="Raster_36.png"/>
-		<Raster id="10" name="Raster_37" palette="0" src="Raster_37.png"/>
-		<Raster id="11" name="Raster_38" palette="0" src="Raster_38.png"/>
-		<Raster id="12" name="Raster_39" palette="0" src="Raster_39.png"/>
-		<Raster id="13" name="Raster_40" palette="0" src="Raster_40.png"/>
-		<Raster id="14" name="Raster_2A" palette="0" src="Raster_2A.png"/>
-		<Raster id="15" name="Raster_2B" palette="0" src="Raster_2B.png"/>
-		<Raster id="16" name="Raster_2C" palette="0" src="Raster_2C.png"/>
-		<Raster id="17" name="Raster_2D" palette="0" src="Raster_2D.png"/>
-		<Raster id="18" name="Raster_2E" palette="0" src="Raster_2E.png"/>
-		<Raster id="19" name="Raster_2F" palette="0" src="Raster_2F.png"/>
+		<Raster id="0" name="Idle1" palette="0" src="Raster_21.png"/>
+		<Raster id="1" name="Idle2" palette="0" src="Raster_25.png"/>
+		<Raster id="2" name="Move1" palette="0" src="Raster_22.png"/>
+		<Raster id="3" name="Move2" palette="0" src="Raster_23.png"/>
+		<Raster id="4" name="Move3" palette="0" src="Raster_24.png"/>
+		<Raster id="5" name="Talk1" palette="0" src="Raster_26.png"/>
+		<Raster id="6" name="Talk2" palette="0" src="Raster_27.png"/>
+		<Raster id="7" name="Spook1" palette="0" src="Raster_28.png"/>
+		<Raster id="8" name="Spook2" palette="0" src="Raster_29.png"/>
+		<Raster id="9" name="Spook3" palette="0" src="Raster_30.png"/>
+		<Raster id="A" name="Spook4" palette="0" src="Raster_31.png"/>
+		<Raster id="B" name="Hurt1" palette="0" src="Raster_32.png"/>
+		<Raster id="C" name="Hurt2" palette="0" src="Raster_33.png"/>
+		<Raster id="D" name="Slink1" palette="0" src="Raster_34.png"/>
+		<Raster id="E" name="Slink2" palette="0" src="Raster_35.png"/>
+		<Raster id="F" name="SlinkTalk1" palette="0" src="Raster_36.png"/>
+		<Raster id="10" name="SlinkTalk2" palette="0" src="Raster_37.png"/>
+		<Raster id="11" name="Angry" palette="0" src="Raster_39.png"/>
+		<Raster id="12" name="AngryTalk1" palette="0" src="Raster_38.png"/>
+		<Raster id="13" name="AngryTalk2" palette="0" src="Raster_40.png"/>
+		<Raster id="14" name="Crown1" palette="0" src="Raster_2A.png"/>
+		<Raster id="15" name="Crown2" palette="0" src="Raster_2B.png"/>
+		<Raster id="16" name="Crown3" palette="0" src="Raster_2C.png"/>
+		<Raster id="17" name="Crown4" palette="0" src="Raster_2D.png"/>
+		<Raster id="18" name="Lightning1" palette="0" src="Raster_2E.png"/>
+		<Raster id="19" name="Lightning2" palette="0" src="Raster_2F.png"/>
 	</RasterList>
 	<AnimationList>
 		<Animation name="Still">
@@ -44,7 +44,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Idle (Blink)">
+		<Animation name="Idle_Blink">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="3001"/>
 				<Command val="0"/>
@@ -92,7 +92,7 @@
 				<Command val="8100"/>
 				<Command val="1000"/>
 				<Command val="5A"/>
-				<Command val="1004"/>
+				<Command val="1001"/>
 				<Command val="4"/>
 				<Command val="1000"/>
 				<Command val="2"/>
@@ -100,7 +100,7 @@
 				<Command val="1"/>
 				<Command val="1000"/>
 				<Command val="96"/>
-				<Command val="1004"/>
+				<Command val="1001"/>
 				<Command val="4"/>
 				<Command val="1000"/>
 				<Command val="5A"/>
@@ -161,11 +161,11 @@
 				<Command val="8100"/>
 				<Command val="1000"/>
 				<Command val="6"/>
-				<Command val="1001"/>
-				<Command val="6"/>
 				<Command val="1002"/>
 				<Command val="6"/>
 				<Command val="1003"/>
+				<Command val="6"/>
+				<Command val="1004"/>
 				<Command val="6"/>
 				<Command val="2000"/>
 			</Component>
@@ -176,7 +176,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Move (Fast)">
+		<Animation name="Move_Fast">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="3000"/>
 				<Command val="0"/>
@@ -224,11 +224,11 @@
 				<Command val="8100"/>
 				<Command val="1000"/>
 				<Command val="4"/>
-				<Command val="1001"/>
-				<Command val="4"/>
 				<Command val="1002"/>
 				<Command val="4"/>
 				<Command val="1003"/>
+				<Command val="4"/>
+				<Command val="1004"/>
 				<Command val="4"/>
 				<Command val="2000"/>
 			</Component>
@@ -754,7 +754,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Slink (Talk)">
+		<Animation name="Slink_Talk">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="3000"/>
 				<Command val="0"/>
@@ -817,7 +817,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Slink (Serious)">
+		<Animation name="Slink_Serious">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="3001"/>
 				<Command val="0"/>
@@ -876,7 +876,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Get Angry">
+		<Animation name="Get_Angry">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="3000"/>
 				<Command val="0"/>
@@ -934,12 +934,22 @@
 				<Command val="FFFD"/>
 				<Command val="0"/>
 				<Command val="40"/>
+				<Command val="1012"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="4"/>
 				<Command val="1011"/>
 				<Command val="4000"/>
 				<Command val="0"/>
 				<Command val="1"/>
+				<Command val="6"/>
+				<Command val="1013"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="1"/>
 				<Command val="4"/>
-				<Command val="1012"/>
+				<Command val="1011"/>
 				<Command val="4000"/>
 				<Command val="0"/>
 				<Command val="1"/>
@@ -949,22 +959,12 @@
 				<Command val="0"/>
 				<Command val="1"/>
 				<Command val="4"/>
-				<Command val="1012"/>
-				<Command val="4000"/>
-				<Command val="0"/>
-				<Command val="1"/>
-				<Command val="6"/>
-				<Command val="1013"/>
-				<Command val="4000"/>
-				<Command val="0"/>
-				<Command val="1"/>
-				<Command val="4"/>
-				<Command val="1012"/>
+				<Command val="1011"/>
 				<Command val="4000"/>
 				<Command val="0"/>
 				<Command val="1"/>
 				<Command val="40"/>
-				<Command val="1011"/>
+				<Command val="1012"/>
 				<Command val="50"/>
 				<Command val="1006"/>
 				<Command val="3000"/>
@@ -1012,7 +1012,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Stay Angry">
+		<Animation name="Stay_Angry">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="3000"/>
 				<Command val="0"/>
@@ -1070,15 +1070,15 @@
 				<Command val="FFFD"/>
 				<Command val="0"/>
 				<Command val="40"/>
-				<Command val="1011"/>
-				<Command val="4"/>
 				<Command val="1012"/>
+				<Command val="4"/>
+				<Command val="1011"/>
 				<Command val="6"/>
 				<Command val="1013"/>
 				<Command val="4"/>
-				<Command val="1012"/>
+				<Command val="1011"/>
 				<Command val="6"/>
-				<Command val="1012"/>
+				<Command val="1011"/>
 				<Command val="80"/>
 			</Component>
 			<Component name="Crown" xyz="2,36,-1">
@@ -1158,7 +1158,7 @@
 			</Component>
 			<Component name="Body" xyz="5,1,0">
 				<Command val="8100"/>
-				<Command val="1012"/>
+				<Command val="1011"/>
 				<Command val="3000"/>
 				<Command val="FFFD"/>
 				<Command val="FFFD"/>
@@ -1185,7 +1185,7 @@
 				<Command val="2007"/>
 			</Component>
 		</Animation>
-		<Animation name="Angry (Talk)">
+		<Animation name="Angry_Talk">
 			<Component name="Float" xyz="1,0,0">
 				<Command val="3000"/>
 				<Command val="0"/>
@@ -1233,11 +1233,11 @@
 				<Command val="8100"/>
 				<Command val="1013"/>
 				<Command val="6"/>
-				<Command val="1012"/>
-				<Command val="2"/>
 				<Command val="1011"/>
-				<Command val="6"/>
+				<Command val="2"/>
 				<Command val="1012"/>
+				<Command val="6"/>
+				<Command val="1011"/>
 				<Command val="2"/>
 				<Command val="2000"/>
 			</Component>
@@ -1263,7 +1263,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Crown Lightning">
+		<Animation name="Crown_Lightning">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="20"/>
 				<Command val="3000"/>
@@ -1336,7 +1336,7 @@
 				<Command val="40"/>
 				<Command val="2000"/>
 			</Component>
-			<Component name="Crown (Rotation)" xyz="0,0,0">
+			<Component name="Crown Rotation" xyz="0,0,0">
 				<Command val="2"/>
 				<Command val="4000"/>
 				<Command val="0"/>

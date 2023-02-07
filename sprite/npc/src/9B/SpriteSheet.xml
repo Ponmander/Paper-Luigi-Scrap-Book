@@ -14,7 +14,7 @@
 	</RasterList>
 	<AnimationList>
 		<Animation name="Idle">
-			<Component name="Comp_00 (copy)" xyz="2,0,0">
+			<Component name="Body" xyz="2,0,0">
 				<Command val="1003"/>
 				<Command val="40"/>
 				<Command val="1004"/>
@@ -27,7 +27,7 @@
 				<Command val="4"/>
 				<Command val="2000"/>
 			</Component>
-			<Component name="Comp_00" xyz="0,24,0">
+			<Component name="Head" xyz="0,24,0">
 				<Command val="8102"/>
 				<Command val="1000"/>
 				<Command val="18"/>

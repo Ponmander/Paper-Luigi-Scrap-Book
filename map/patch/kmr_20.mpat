@@ -1,0 +1,74 @@
+#define .goombarioID 1
+#define .kooperID 2
+#define .bombetteID 3
+#define .parakarryID 4
+%#define .goompaID 5
+#define .wattID 6
+#define .sushieID 7
+#define .lakilesterID 8
+#define .bowID 9
+
+#new:Function $GivePlayerMaxStats {
+    LIO t0, 8010F290
+    ORI t2, r0, 32 % hex for 50
+	ORI t3, r0, 1E % hex for 30
+	ORI t4, r0, 1 % hex for 1
+    SB t2, 0002 (t0) % set hp
+    SB t2, 0003 (t0) % max hp
+    SB t2, 0004 (t0) % true max hp
+    SB t2, 0005 (t0) % set fp
+    SB t2, 0006 (t0) % max fp
+    SB t2, 0007 (t0) % true max fp
+	SB t3, 0008 (t0) % max BP
+	SB t4, 0009 (t0) % level 5
+    JR RA
+    ORI v0, r0, 2
+}
+
+#new:Function $GiveBootsAndHammer {
+	LIO t0, 8010F290
+	ORI t1, r0, 0202
+	SH t1, 0000 (t0)
+	JR RA
+	ORI v0, r0, 0002
+}
+
+#new:Function $GiveActionCommands {
+	ORI t0, r0, 1
+	SAB t0, 8010F29A
+	JR RA
+	ORI v0, r0, 2
+}
+
+/%
+#new:Function $GivePartners {
+	ORI v0, r0, 1 %loop count
+	SAB v0, 8010F2A2 %set current partner to goombario
+	ORI v1, r0, 0102 %parnter and max level
+	LIO t0, 8010F2A4
+	.loop
+	SLL t1, v0, 3 %multiply loop count by sizeof partner struct
+	ADDU t2, t1, t0 %get offset into struct
+	SH v1, 0000 (t2) %set partner and upgrade
+	SLTI t3, v0, 9 %8 partners
+	BNE t3, r0, .loop
+	ADDIU v0, v0, 1 %increment loop count
+	JR RA
+	ORI v0, r0, 2
+}
+%/
+
+@ $Script_8024FD70 { % First Play, go to starting castle room
+	%debug
+	Call GotoMap ("mac_00" 1)
+	Set *GB_StoryProgress FFFFFF9E
+	Call $GivePlayerMaxStats ()
+	%Call $GivePartners ()
+	Call $GiveBootsAndHammer ()
+	Call $GiveActionCommands ()
+	Call AddBadge ( .Item:CloseCall *Var0 )
+	Call AddBadge ( .Item:Peekaboo *Var1 )
+	Call AddBadge ( .Item:DodgeMaster *Var2 )
+	Return
+	End
+}

@@ -1,0 +1,1021 @@
+% Define Animations
+
+#define .Anim:KingBooStill	00950000
+#define .Anim:KingBooIdle	00950001
+#define .Anim:KingBooMove  00950002
+#define .Anim:KingBooMoveFast  00950003
+#define .Anim:KingBooTalk  00950004
+#define .Anim:KingBooSerious  00950005
+#define .Anim:KingBooHide  00950006
+#define .Anim:KingBooScare  00950007
+#define .Anim:KingBooLaugh  00950008
+#define .Anim:KingBooFrustrated  00950009
+#define .Anim:KingBooSlink  0095000A
+#define .Anim:KingBooSlinkTalk  0095000B
+#define .Anim:KingBooSlinkSerious  0095000C
+#define .Anim:KingBooGetAngry  0095000D
+#define .Anim:KingBooStayAngry  0095000E
+#define .Anim:KingBooAngry  0095000F
+#define .Anim:KingBooAngryTalk  00950010
+#define .Anim:KingBooCrownLightning  00950011
+#define .Anim:KingBooHurt  00950012
+
+% Define Parts
+
+#define .Part:KingBoo 1
+#define .Part:FakeKingBoo 1
+
+#new:Actor $FakeKingBoo
+{
+% stats
+[Index]        F3b 
+[Level]        0`b %miniboss stats 
+[MaxHP]        10`b 
+[Coins]         0`b 
+[Flags]       00000200 
+[StatusTable] $StatusTable_FakeKingBoo 
+% ai
+[PartsCount]   1`s 
+[PartsTable] $PartsTable_FakeKingBoo 
+[Script]      $Script_Init_FakeKingBoo 
+% move effectiveness
+[Escape]        0`b %no escape 
+[Item]          0`b 
+[AirLift]       0`b 
+[Hurricane]     0`b % Bow's "Spook" as well
+[UpAndAway]     0`b 
+[PowerBounce]   4`b 
+[SpinSmash]     2`b % weight (0-4)
+% ui positions
+[Size]        24`b 24`b % width height
+[HealthBar]     0`b   0`b % dx dy
+[StatusTurn]  -10`b 20`b % dx dy (usually top left)
+[StatusIcon]   10`b 20`b % dx dy (usually top right)
+}
+
+#new:StatusTable $StatusTable_FakeKingBoo 
+{
+.Status:Normal    0`
+.Status:Default   0`
+.Status:Sleep     100`
+.Status:Poison    100`
+.Status:Frozen    100`
+.Status:Dizzy     100`
+.Status:Fear      100`
+.Status:Static    100`
+.Status:Paralyze  100`
+.Status:Shrink    100`
+.Status:Stop      100`
+.Status:SleepTurnMod      0`
+.Status:PoisonTurnMod     0`
+.Status:FrozenTurnMod     0`
+.Status:DizzyTurnMod      0`
+.Status:StaticTurnMod     0`
+.Status:ParalyzeTurnMod   0`
+.Status:ShrinkTurnMod     0`
+.Status:StopTurnMod       1`
+.Status:End
+}
+
+#new:PartsTable $PartsTable_FakeKingBoo %ActorPartBlueprint struct in decomp
+{ 
+    /% s32 flags %/                 00800000
+    /% s8 index %/                  ~Byte:.Part:FakeKingBoo
+    /% Vec3b posOffset %/           00b 00b 00b
+    /% Vec2b targetOffset %/        00b 2Bb %for cursor when selecting to attack in battle
+    /% s16 opacity %/               00FFs
+    /% s32* IdleAnimations %/       $IdleAnimations_FakeKingBoo
+    /% s32* defenseTable %/         $DefenseTable_FakeKingBoo
+    /% s32 eventFlags %/            00000000
+    /% s32 elementImmunityFlags %/  00000000
+    /% s8 unk_1C %/                 00b
+    /% s8 unk_1D %/                 F6b
+    /% s8 unk_1E %/                 00b
+    /% s8 unk_1F %/                 00b
+    /% s8 unk_20 %/                 00000000 
+}
+
+#new:IdleAnimations $IdleAnimations_FakeKingBoo
+{
+.Status:Normal    .Anim:KingBooIdle
+.Status:Stone     .Anim:KingBooStill
+.Status:Sleep     .Anim:KingBooStill
+.Status:Poison    .Anim:KingBooIdle
+.Status:Stop      .Anim:KingBooStill
+.Status:Static    .Anim:KingBooIdle
+.Status:Paralyze  .Anim:KingBooStill
+.Status:Dizzy     .Anim:KingBooStill
+.Status:End
+}
+
+#new:IdleAnimations $IdleAnimations_FakeKingBoo_Charged
+{
+.Status:Normal    .Anim:KingBooHide
+.Status:Stone     .Anim:KingBooHide
+.Status:Sleep     .Anim:KingBooHide
+.Status:Poison    .Anim:KingBooHide
+.Status:Stop      .Anim:KingBooHide
+.Status:Static    .Anim:KingBooHide
+.Status:Paralyze  .Anim:KingBooHide
+.Status:Dizzy     .Anim:KingBooHide
+.Status:End
+}
+
+#new:DefenseTable $DefenseTable_FakeKingBoo
+{
+.Element:Normal 0`
+.Element:Jump 0`
+.Element:Hammer 0`
+.Element:Throw -2`
+.Element:Water 3`
+.Element:Fire 3`
+.Element:Ice 3`
+.Element:Blast -4`
+.Element:Magic 50`
+.Element:Cosmic -200`
+.Element:End
+}
+
+#new:Script $Script_Init_FakeKingBoo
+{
+	Call  BindTakeTurn	( .Actor:Self $Script_TakeTurn_FakeKingBoo )
+	Call  BindIdle	( .Actor:Self $Script_Idle_FakeKingBoo )
+	Call  BindHandleEvent  ( .Actor:Self $Script_HandleEvent_FakeKingBoo )
+    /%
+    
+    Call  SetActorVar ( .Actor:Self 00000000 00000000 ) % Did we scare?
+	Call  SetActorVar ( .Actor:Self 00000001 00000000 ) % Have we discharged a lightning bolt from taking damage?
+	Call  SetActorVar ( .Actor:Self 00000002 00000000 ) % What main attack did we use last time we attacked? (0 = NA, 1 = Scare, 2 = Bodyslam, 3 = Lighting Bolt)
+
+    %/
+	Return
+	End
+}
+
+#new:Script $Script_Idle_FakeKingBoo
+{
+	Return
+	End
+}
+
+#new:Script $Script_ReturnHome_FakeKingBoo
+{
+	Call  SetAnimation 	( .Actor:Self .Part:FakeKingBoo .Anim:KingBooMoveFast )
+	Call  SetGoalToHome 	( .Actor:Self )
+	Call  SetActorSpeed 	( .Actor:Self *Fixed[8.0] )
+	Thread
+		Call  $Function_ReturnHome_FakeKingBoo ( )
+	EndThread
+	Call  FlyToGoal  	( .Actor:Self 00000000 00000001 .Easing:SinOut )
+	Call  SetAnimation 	( .Actor:Self .Part:FakeKingBoo .Anim:KingBooIdle )
+	Return
+	End
+}
+	
+#new:Function $Function_ReturnHome_FakeKingBoo
+{
+	ADDIU     SP, SP, FFD8
+	SW        S2, 20 (SP)
+	DADDU     S2, A0, R0
+	SW        RA, 24 (SP)
+	SW        S1, 1C (SP)
+	SW        S0, 18 (SP)
+	LW        A0, 148 (S2)
+	JAL       ~Func:get_actor
+	DADDU     S0, A1, R0
+	BEQ       S0, R0, .oDC
+	DADDU     S1, V0, R0
+	LWC1      F2, 18 (S1)
+	LWC1      F0, 144 (S1)
+	SUB.S     F2, F2, F0
+	MUL.S     F2, F2, F2
+	NOP
+	LWC1      F6, 1C (S1)
+	LWC1      F0, 148 (S1)
+	SUB.S     F6, F6, F0
+	MUL.S     F6, F6, F6
+	NOP
+	LWC1      F4, 14C (S1)
+	LWC1      F0, 20 (S1)
+	SUB.S     F0, F0, F4
+	MUL.S     F0, F0, F0
+	NOP
+	ADD.S     F2, F2, F6
+	ADD.S     F12, F2, F0
+	SQRT.S    F4, F12
+	C.EQ.S    F4, F4
+	NOP
+	BC1T      .o90
+	NOP
+	JAL       80061EF0
+	NOP
+	MOV.S     F4, F0
+        .o90
+	LWC1      F0, 4C (S1)
+	LIF       F2, 0.5
+	DIV.S     F0, F4, F0
+	MUL.S     F0, F0, F2
+	NOP
+	LIF       F2, 1.0
+	NOP
+	ADD.S     F0, F0, F2
+	TRUNC.W.S F8, F0
+	SWC1      F8, 70 (S2)
+	LWC1      F0, 14C (S1)
+	ADDIU     A0, R0, 359
+	SWC1      F0, 10 (SP)
+	LW        A2, 144 (S1)
+	LW        A3, 148 (S1)
+	JAL       80149D5C
+	DADDU     A1, R0, R0
+        .oDC
+	LW        V0, 70 (S2)
+	DADDU     V1, V0, R0
+	ADDIU     V0, V0, FFFF
+	BGTZ      V1, .o114
+	SW        V0, 70 (S2)
+	LWC1      F0, 14C (S1)
+	ADDIU     A0, R0, 759
+	SWC1      F0, 10 (SP)
+	LW        A2, 144 (S1)
+	LW        A3, 148 (S1)
+	JAL       80149D5C
+	DADDU     A1, R0, R0
+	BEQ       R0, R0, .o118
+	ADDIU     V0, R0, 2
+        .o114
+	DADDU     V0, R0, R0
+        .o118
+	LW        RA, 24 (SP)
+	LW        S2, 20 (SP)
+	LW        S1, 1C (SP)
+	LW        S0, 18 (SP)
+	JR        RA
+	ADDIU     SP, SP, 28
+}
+
+#new:Script $Script_HandleEvent_FakeKingBoo
+{
+	Call     UseIdleAnimation 	( .Actor:Self .False )
+	Call     EnableIdleScript 	( .Actor:Self .False )
+	Call     GetLastEvent 	( .Actor:Self *Var0 )
+	Switch  *Var0 
+		CaseOR  ==  .Event:HitCombo
+		CaseOR  ==  .Event:Hit
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt 
+			ExecWait DoNormalHit 
+		EndCaseGroup
+		Case  ==  .Event:BurnHit
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			SetConst  *Var2  .Anim:KingBooHurt % Change to Death animation  
+			ExecWait DoBurnHit 
+		Case  ==  .Event:BurnDeath
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			SetConst  *Var2  .Anim:KingBooHurt  % Change to Death Animation
+			ExecWait DoBurnHit 
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  % Change to Death Animation
+			ExecWait DoDeath 
+			Return
+		Case  ==  .Event:SpinSmashHit
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait 8029B998 
+		Case  ==  .Event:SpinSmashDeath
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait 8029B998 
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoDeath 
+			Return
+		Case  ==  .Event:ShockHit
+			Call     PlaySoundAtActor 	( .Actor:Self 00000759 )
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoShockHit 
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait 8029BD70 
+			ExecWait $Script_ReturnHome_FakeKingBoo 
+		Case  ==  .Event:ShockDeath
+			Call     PlaySoundAtActor 	( .Actor:Self 00000759 )
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoShockHit 
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoDeath 
+			Return
+		CaseOR  ==  00000017
+		CaseOR  ==  .Event:Immune
+		CaseOR  ==  .Event:AirLiftFailed
+		CaseOR  ==  .Event:BurnTaunt
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooIdle  
+			ExecWait DoImmune 
+		EndCaseGroup
+		Case  ==  .Event:Death
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoNormalHit 
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoDeath 
+			Return
+		Case  ==  .Event:BeginFirstStrike
+			Call     SetActorPos 	( .Actor:Self 00000014 00000000 00000000 )
+			Call     HPBarToCurrent ( .Actor:Self )
+		Case  ==  .Event:EndFirstStrike
+			ExecWait $Script_ReturnHome_FakeKingBoo 
+			Call     HPBarToHome 	( .Actor:Self )
+		Case  ==  .Event:RecoverStatus
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooIdle 
+			ExecWait DoRecover 
+		Case  ==  .Event:ScareAway
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooMoveFast 
+			SetConst  *Var2  .Anim:KingBooHurt
+			ExecWait DoScareAway 
+			Return
+		Case  ==  .Event:BeginAirLift
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooMoveFast 
+			ExecWait DoAirLift 
+		Case  ==  .Event:BlowAway
+			SetConst  *Var0  .Part:FakeKingBoo 
+			SetConst  *Var1  .Anim:KingBooMoveFast 
+			ExecWait DoBlowAway 
+			Return
+		Case  ==  .Event:UpAndAway
+		Default
+	EndSwitch
+	Call     EnableIdleScript 	( .Actor:Self .True )
+	Call     UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Script_TakeTurn_FakeKingBoo
+{
+    Call	UseIdleAnimation	( .Actor:Self .False )
+	Call	EnableIdleScript	( .Actor:Self .False )
+
+
+    ExecWait $Script_FakeKingBoo_Scare
+
+
+    Call	UseIdleAnimation	( .Actor:Self .True )
+	Call	EnableIdleScript	( .Actor:Self .True )
+	Return
+	End
+}
+
+
+
+#new:Script $Script_FakeKingBoo_Scare
+{
+	Call	UseIdleAnimation	( .Actor:Self .False )
+	Call	EnableIdleScript	( .Actor:Self .False )
+	Call	SetTargetActor		( .Actor:Self .Actor:Player )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self 00000000 *Var0 )
+		Wait	1 
+	EndLoop
+	Call	SetAnimation		( .Actor:Self .Part:FakeKingBoo .Anim:KingBooHide )
+	Wait	20`
+	Call	UseBattleCamPreset 		( 00000013 )
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 20` 
+	Set  *Var1 0` 
+	Call	SetBattleCamTarget 		( *Var0 *Var1 *Var2 )
+	Call	SetBattleCamZoom  		( 0000015E )
+	Call	SetBattleCamOffsetZ 		( 0000002D )
+	Call	8024ECF8 			( FFFFFFFF 00000001 00000000 )
+	Call	MoveBattleCamOver 		( 00000014 )
+	Call	SetGoalToTarget 	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 25` 
+	Set  *Var1 10` 
+	Call	SetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Call	SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call	RunToGoal   	( .Actor:Self 00000000 .False )	
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF  *Var0  0`
+	Loop	16`
+		Add  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self 00000000 *Var0 )
+		Wait	1
+	EndLoop
+	% randomized delay
+	Call	RandInt			( 48` *Var0 )
+	Wait	*Var0
+	% lunge and attack (4 frame delay)
+	Thread
+		Wait	23`
+		Call	GetGoalPos  	( .Actor:Self *Var0 *Var1 *Var2 )
+		Sub  *Var0 10`
+		Call	SetGoalPos  	( .Actor:Self *Var0 *Var1 *Var2 )
+		Call	RunToGoal   	( .Actor:Self  3` .False )	
+	EndThread
+	Thread
+		Wait	24`
+		Call	MakeLerp	( 100` 150` 2` 00000000 )
+		Label	1
+			Call	UpdateLerp  	( )
+			DivF	*Var0  100`
+			Call	SetActorScale	( .Actor:Self *Var0 *Var0 *Var0 )
+			Wait	1 
+		If  *Var1  ==  .True 
+			Goto	1
+		EndIf
+	EndThread
+	%wiggle a little bit
+	Thread
+		Wait	15`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 1`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 1`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 2`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 2`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 3`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 3`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 4`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+	EndThread
+	Call	SetAnimation 	( .Actor:Self .Part:FakeKingBoo .Anim:KingBooScare )
+	Wait	27`
+	Call	EnemyTestTarget ( .Actor:Self *Var0 10000000 00000000 *Var1 00000010 )
+	Switch  *Var0 
+		CaseOR   ==  00000006 
+		CaseOR   ==  00000005 
+			If  *Var0 == 00000005 
+				Call	EnemyTestTarget ( .Actor:Self *Var0 80000000 00000000 00000000 00000000 )
+			EndIf
+			Goto	10
+		EndCaseGroup
+	EndSwitch
+	Call	PlaySoundAtActor	( .Actor:Self 00000291 )
+	Wait	2 
+	Call	EnemyDamageTarget 	( .Actor:Self *Var0 10000000 00000000 00000000 1` 00000020 ) % 1 Damage
+	Label	10
+	Wait	10`
+	Call	SetAnimation 	( .Actor:Self .Part:FakeKingBoo .Anim:KingBooIdle )
+	Call     MakeLerp	( 150` 100` 6` 00000000 )
+	Label    2
+		Call	UpdateLerp  	( )
+		DivF	*Var0  100`
+		Call	SetActorScale	( .Actor:Self *Var0 *Var0 *Var0 )
+		Wait     1 
+	If  *Var1  ==  .True 
+		Goto     2
+	EndIf
+	Wait	10`
+	Call	UseBattleCamPreset 	( 00000002 )
+	Call	MoveBattleCamOver 	( 00000014 )
+	Call	SetGoalToHome 	( .Actor:Self )
+	Call	SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call	RunToGoal   	( .Actor:Self 00000000 .False )	
+	Wait	20` 
+	Call	EnableIdleScript 	( .Actor:Self .True )
+	Call	UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Actor $KingBoo
+{
+% stats
+[Index]        F3b 
+[Level]        30`b %miniboss stats 
+[MaxHP]        40`b 
+[Coins]         0`b 
+[Flags]       00000200 
+[StatusTable] $StatusTable_KingBoo 
+% ai
+[PartsCount]   1`s 
+[PartsTable] $PartsTable_KingBoo 
+[Script]      $Script_Init_KingBoo 
+% move effectiveness
+[Escape]        0`b %no escape 
+[Item]          0`b 
+[AirLift]       0`b 
+[Hurricane]     0`b % Bow's "Spook" as well
+[UpAndAway]     0`b 
+[PowerBounce]   4`b 
+[SpinSmash]     2`b % weight (0-4)
+% ui positions
+[Size]        24`b 24`b % width height
+[HealthBar]     0`b   0`b % dx dy
+[StatusTurn]  -10`b 20`b % dx dy (usually top left)
+[StatusIcon]   10`b 20`b % dx dy (usually top right)
+}
+
+#new:PartsTable $PartsTable_KingBoo %ActorPartBlueprint struct in decomp
+{ 
+    /% s32 flags %/                 00800000
+    /% s8 index %/                  ~Byte:.Part:KingBoo
+    /% Vec3b posOffset %/           00b 00b 00b
+    /% Vec2b targetOffset %/        00b 2Bb %for cursor when selecting to attack in battle
+    /% s16 opacity %/               00FFs
+    /% s32* IdleAnimations %/       $IdleAnimations_KingBoo
+    /% s32* defenseTable %/         $DefenseTable_KingBoo
+    /% s32 eventFlags %/            00000000
+    /% s32 elementImmunityFlags %/  00000000
+    /% s8 unk_1C %/                 00b
+    /% s8 unk_1D %/                 F6b
+    /% s8 unk_1E %/                 00b
+    /% s8 unk_1F %/                 00b
+    /% s8 unk_20 %/                 00000000 
+}
+
+/%
+#new:PartsTable $PartsTable_KingBoo
+{
+00800000 01000000 003C00FF $IdleAnimations_KingBoo $DefenseTable_KingBoo 00000000 00000000 FDF60000 00000000 
+}
+%/
+
+
+#new:StatusTable $StatusTable_KingBoo 
+{
+.Status:Normal     0`
+.Status:Default    0`
+.Status:Sleep      0` 
+.Status:Poison     0`
+.Status:Frozen     0`
+.Status:Dizzy      0` 
+.Status:Static     0`
+.Status:Paralyze   0`
+.Status:Shrink     0`
+.Status:Stop      100`
+.Status:SleepTurnMod     -3`
+.Status:PoisonTurnMod    -3`
+.Status:FrozenTurnMod    -3`
+.Status:DizzyTurnMod     -3`
+.Status:StaticTurnMod    -3`
+.Status:ParalyzeTurnMod  -3`
+.Status:ShrinkTurnMod    -3`
+.Status:StopTurnMod       1`
+.Status:End
+}
+
+/%
+
+#new:StatusTable $StatusTable_KingBoo_Charged
+{
+.Status:Normal            0`
+.Status:Sleep             0` 
+.Status:Poison            0`
+.Status:Frozen            0`
+.Status:Dizzy             0` %I don't have animations for dizzy yet
+.Status:Static            0`
+.Status:Paralyze          0`
+.Status:Shrink            0`
+.Status:Stop              0`
+.Status:SleepTurnMod      0`
+.Status:PoisonTurnMod     0`
+.Status:FrozenTurnMod     0`
+.Status:DizzyTurnMod      0`
+.Status:StaticTurnMod     0`
+.Status:ParalyzeTurnMod   0`
+.Status:ShrinkTurnMod     0`
+.Status:StopTurnMod       0`
+.Status:End
+}
+
+%/
+
+#new:IdleAnimations $IdleAnimations_KingBoo
+{
+.Status:Normal    .Anim:KingBooIdle
+.Status:Stone     .Anim:KingBooStill
+.Status:Sleep     .Anim:KingBooStill
+.Status:Poison    .Anim:KingBooIdle
+.Status:Stop      .Anim:KingBooStill
+.Status:Static    .Anim:KingBooIdle
+.Status:Paralyze  .Anim:KingBooStill
+.Status:Dizzy     .Anim:KingBooStill
+.Status:End
+}
+
+#new:IdleAnimations $IdleAnimations_KingBoo_Charged
+{
+.Status:Normal    .Anim:KingBooHide
+.Status:Stone     .Anim:KingBooHide
+.Status:Sleep     .Anim:KingBooHide
+.Status:Poison    .Anim:KingBooHide
+.Status:Stop      .Anim:KingBooHide
+.Status:Static    .Anim:KingBooHide
+.Status:Paralyze  .Anim:KingBooHide
+.Status:Dizzy     .Anim:KingBooHide
+.Status:End
+}
+
+#new:DefenseTable $DefenseTable_KingBoo
+{
+.Element:Normal 0`
+.Element:Jump 0`
+.Element:Hammer 0`
+.Element:Throw -1`
+.Element:Water 6`
+.Element:Fire 6`
+.Element:Ice 6`
+.Element:Blast -2`
+.Element:Magic 100`
+.Element:Cosmic -100`
+.Element:End
+}
+
+#new:Script $Script_Init_KingBoo
+{
+	Call  BindTakeTurn	( .Actor:Self $Script_TakeTurn_KingBoo )
+	Call  BindIdle	( .Actor:Self $Script_Idle_KingBoo )
+	Call  BindHandleEvent  ( .Actor:Self $Script_HandleEvent_KingBoo )
+    Call  SetActorVar ( .Actor:Self 00000000 00000000 ) % Did we scare?
+	Call  SetActorVar ( .Actor:Self 00000001 00000000 ) % Have we discharged a lightning bolt from taking damage?
+	Call  SetActorVar ( .Actor:Self 00000002 00000000 ) % What main attack did we use last time we attacked? (0 = NA, 1 = Scare, 2 = Bodyslam, 3 = Lighting Bolt)
+	Return
+	End
+}
+
+#new:Script $Script_Idle_KingBoo
+{
+	Return
+	End
+}
+
+#new:Script $Script_ReturnHome_KingBoo
+{
+	Call  SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBooMoveFast )
+	Call  SetGoalToHome 	( .Actor:Self )
+	Call  SetActorSpeed 	( .Actor:Self *Fixed[8.0] )
+	Thread
+		Call  $Function_ReturnHome_KingBoo ( )
+	EndThread
+	Call  FlyToGoal  	( .Actor:Self 00000000 00000001 .Easing:SinOut )
+	Call  SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBooIdle )
+	Return
+	End
+}
+	
+#new:Function $Function_ReturnHome_KingBoo
+{
+	ADDIU     SP, SP, FFD8
+	SW        S2, 20 (SP)
+	DADDU     S2, A0, R0
+	SW        RA, 24 (SP)
+	SW        S1, 1C (SP)
+	SW        S0, 18 (SP)
+	LW        A0, 148 (S2)
+	JAL       ~Func:get_actor
+	DADDU     S0, A1, R0
+	BEQ       S0, R0, .oDC
+	DADDU     S1, V0, R0
+	LWC1      F2, 18 (S1)
+	LWC1      F0, 144 (S1)
+	SUB.S     F2, F2, F0
+	MUL.S     F2, F2, F2
+	NOP
+	LWC1      F6, 1C (S1)
+	LWC1      F0, 148 (S1)
+	SUB.S     F6, F6, F0
+	MUL.S     F6, F6, F6
+	NOP
+	LWC1      F4, 14C (S1)
+	LWC1      F0, 20 (S1)
+	SUB.S     F0, F0, F4
+	MUL.S     F0, F0, F0
+	NOP
+	ADD.S     F2, F2, F6
+	ADD.S     F12, F2, F0
+	SQRT.S    F4, F12
+	C.EQ.S    F4, F4
+	NOP
+	BC1T      .o90
+	NOP
+	JAL       80061EF0
+	NOP
+	MOV.S     F4, F0
+        .o90
+	LWC1      F0, 4C (S1)
+	LIF       F2, 0.5
+	DIV.S     F0, F4, F0
+	MUL.S     F0, F0, F2
+	NOP
+	LIF       F2, 1.0
+	NOP
+	ADD.S     F0, F0, F2
+	TRUNC.W.S F8, F0
+	SWC1      F8, 70 (S2)
+	LWC1      F0, 14C (S1)
+	ADDIU     A0, R0, 359
+	SWC1      F0, 10 (SP)
+	LW        A2, 144 (S1)
+	LW        A3, 148 (S1)
+	JAL       80149D5C
+	DADDU     A1, R0, R0
+        .oDC
+	LW        V0, 70 (S2)
+	DADDU     V1, V0, R0
+	ADDIU     V0, V0, FFFF
+	BGTZ      V1, .o114
+	SW        V0, 70 (S2)
+	LWC1      F0, 14C (S1)
+	ADDIU     A0, R0, 759
+	SWC1      F0, 10 (SP)
+	LW        A2, 144 (S1)
+	LW        A3, 148 (S1)
+	JAL       80149D5C
+	DADDU     A1, R0, R0
+	BEQ       R0, R0, .o118
+	ADDIU     V0, R0, 2
+        .o114
+	DADDU     V0, R0, R0
+        .o118
+	LW        RA, 24 (SP)
+	LW        S2, 20 (SP)
+	LW        S1, 1C (SP)
+	LW        S0, 18 (SP)
+	JR        RA
+	ADDIU     SP, SP, 28
+}
+
+#new:Script $Script_HandleEvent_KingBoo
+{
+	Call     UseIdleAnimation 	( .Actor:Self .False )
+	Call     EnableIdleScript 	( .Actor:Self .False )
+	Call     GetLastEvent 	( .Actor:Self *Var0 )
+	Switch  *Var0 
+		CaseOR  ==  .Event:HitCombo
+		CaseOR  ==  .Event:Hit
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt 
+			ExecWait DoNormalHit 
+		EndCaseGroup
+		Case  ==  .Event:BurnHit
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			SetConst  *Var2  .Anim:KingBooHurt % Change to Death animation  
+			ExecWait DoBurnHit 
+		Case  ==  .Event:BurnDeath
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			SetConst  *Var2  .Anim:KingBooHurt  % Change to Death Animation
+			ExecWait DoBurnHit 
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  % Change to Death Animation
+			ExecWait DoDeath 
+			Return
+		Case  ==  .Event:SpinSmashHit
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait 8029B998 
+		Case  ==  .Event:SpinSmashDeath
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait 8029B998 
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoDeath 
+			Return
+		Case  ==  .Event:ShockHit
+			Call     PlaySoundAtActor 	( .Actor:Self 00000759 )
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoShockHit 
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait 8029BD70 
+			ExecWait $Script_ReturnHome_KingBoo 
+		Case  ==  .Event:ShockDeath
+			Call     PlaySoundAtActor 	( .Actor:Self 00000759 )
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoShockHit 
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoDeath 
+			Return
+		CaseOR  ==  00000017
+		CaseOR  ==  .Event:Immune
+		CaseOR  ==  .Event:AirLiftFailed
+		CaseOR  ==  .Event:BurnTaunt
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooIdle  
+			ExecWait DoImmune 
+		EndCaseGroup
+		Case  ==  .Event:Death
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoNormalHit 
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooHurt  
+			ExecWait DoDeath 
+			Return
+		Case  ==  .Event:BeginFirstStrike
+			Call     SetActorPos 	( .Actor:Self 00000014 00000000 00000000 )
+			Call     HPBarToCurrent ( .Actor:Self )
+		Case  ==  .Event:EndFirstStrike
+			ExecWait $Script_ReturnHome_KingBoo 
+			Call     HPBarToHome 	( .Actor:Self )
+		Case  ==  .Event:RecoverStatus
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooIdle 
+			ExecWait DoRecover 
+		Case  ==  .Event:ScareAway
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooMoveFast 
+			SetConst  *Var2  .Anim:KingBooHurt
+			ExecWait DoScareAway 
+			Return
+		Case  ==  .Event:BeginAirLift
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooMoveFast 
+			ExecWait DoAirLift 
+		Case  ==  .Event:BlowAway
+			SetConst  *Var0  .Part:KingBoo 
+			SetConst  *Var1  .Anim:KingBooMoveFast 
+			ExecWait DoBlowAway 
+			Return
+		Case  ==  .Event:UpAndAway
+		Default
+	EndSwitch
+	Call     EnableIdleScript 	( .Actor:Self .True )
+	Call     UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Script_TakeTurn_KingBoo
+{
+    Call	UseIdleAnimation	( .Actor:Self .False )
+	Call	EnableIdleScript	( .Actor:Self .False )
+
+
+
+
+
+    Call	UseIdleAnimation	( .Actor:Self .True )
+	Call	EnableIdleScript	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Script_KingBoo_Scare
+{
+	Call	UseIdleAnimation	( .Actor:Self .False )
+	Call	EnableIdleScript	( .Actor:Self .False )
+	Call	SetTargetActor		( .Actor:Self .Actor:Player )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self 00000000 *Var0 )
+		Wait	1 
+	EndLoop
+	Call	SetAnimation		( .Actor:Self .Part:KingBoo .Anim:KingBooHide )
+	Wait	20`
+	Call	UseBattleCamPreset 		( 00000013 )
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 20` 
+	Set  *Var1 0` 
+	Call	SetBattleCamTarget 		( *Var0 *Var1 *Var2 )
+	Call	SetBattleCamZoom  		( 0000015E )
+	Call	SetBattleCamOffsetZ 		( 0000002D )
+	Call	8024ECF8 			( FFFFFFFF 00000001 00000000 )
+	Call	MoveBattleCamOver 		( 00000014 )
+	Call	SetGoalToTarget 	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 25` 
+	Set  *Var1 10` 
+	Call	SetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Call	SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call	RunToGoal   	( .Actor:Self 00000000 .False )	
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF  *Var0  0`
+	Loop	16`
+		Add  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self 00000000 *Var0 )
+		Wait	1
+	EndLoop
+	% randomized delay
+	Call	RandInt			( 48` *Var0 )
+	Wait	*Var0
+	% lunge and attack (4 frame delay)
+	Thread
+		Wait	23`
+		Call	GetGoalPos  	( .Actor:Self *Var0 *Var1 *Var2 )
+		Sub  *Var0 10`
+		Call	SetGoalPos  	( .Actor:Self *Var0 *Var1 *Var2 )
+		Call	RunToGoal   	( .Actor:Self  3` .False )	
+	EndThread
+	Thread
+		Wait	24`
+		Call	MakeLerp	( 100` 150` 2` 00000000 )
+		Label	1
+			Call	UpdateLerp  	( )
+			DivF	*Var0  100`
+			Call	SetActorScale	( .Actor:Self *Var0 *Var0 *Var0 )
+			Wait	1 
+		If  *Var1  ==  .True 
+			Goto	1
+		EndIf
+	EndThread
+	%wiggle a little bit
+	Thread
+		Wait	15`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 1`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 1`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 2`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 2`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 3`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 3`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 4`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )	
+	EndThread
+	Call	SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBooScare )
+	Wait	27`
+	Call	EnemyTestTarget ( .Actor:Self *Var0 10000000 00000000 *Var1 00000010 )
+	Switch  *Var0 
+		CaseOR   ==  00000006 
+		CaseOR   ==  00000005 
+			If  *Var0 == 00000005 
+				Call	EnemyTestTarget ( .Actor:Self *Var0 80000000 00000000 00000000 00000000 )
+			EndIf
+			Goto	10
+		EndCaseGroup
+	EndSwitch
+	Call	PlaySoundAtActor	( .Actor:Self 00000291 )
+	Wait	2 
+	Call	EnemyDamageTarget 	( .Actor:Self *Var0 10000000 00000000 00000000 4` 00000020 ) % 4 Damage
+	Label	10
+	Wait	10`
+	Call	SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBooIdle )
+	Call     MakeLerp	( 150` 100` 6` 00000000 )
+	Label    2
+		Call	UpdateLerp  	( )
+		DivF	*Var0  100`
+		Call	SetActorScale	( .Actor:Self *Var0 *Var0 *Var0 )
+		Wait     1 
+	If  *Var1  ==  .True 
+		Goto     2
+	EndIf
+	Wait	10`
+	Call	UseBattleCamPreset 	( 00000002 )
+	Call	MoveBattleCamOver 	( 00000014 )
+	Call	SetGoalToHome 	( .Actor:Self )
+	Call	SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call	RunToGoal   	( .Actor:Self 00000000 .False )	
+	Wait	20` 
+	Call	EnableIdleScript 	( .Actor:Self .True )
+	Call	UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
