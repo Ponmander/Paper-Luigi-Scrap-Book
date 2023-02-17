@@ -1,4 +1,4 @@
-%Dark Mario
+/%Dark Mario
 %His stats are based on the player's stats
 %To avoid making the pit boss too easy the fight also has dark partners too
 
@@ -790,7 +790,7 @@
 }
 
 %/
-
+/%
 #new:Script $Script_Hammer_DarkMario
 {
 	%run up

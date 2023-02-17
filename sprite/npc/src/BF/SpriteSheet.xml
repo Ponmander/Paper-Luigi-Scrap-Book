@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SpriteSheet maxComponents="2" paletteGroups="2">
+<SpriteSheet maxComponents="2" paletteGroups="1">
 	<PaletteList>
-		<Palette id="0" name="Palette_00" src="Raster_2A.pal.png"/>
+		<Palette id="0" name="King Boo" src="Raster_2A.pal.png"/>
 	</PaletteList>
 	<RasterList>
 		<Raster id="0" name="Raster_21" palette="0" src="Raster_21.png"/>
@@ -47,7 +47,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Idle (Blink)">
+		<Animation name="Idle Blink">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="3001"/>
 				<Command val="0"/>
@@ -179,7 +179,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Move (Fast)">
+		<Animation name="Move Fast">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="3000"/>
 				<Command val="0"/>
@@ -757,7 +757,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Slink (Talk)">
+		<Animation name="Slink Talk">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="3000"/>
 				<Command val="0"/>
@@ -820,7 +820,7 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Slink (Serious)">
+		<Animation name="Slink Serious">
 			<Component name="Float" xyz="0,0,0">
 				<Command val="3001"/>
 				<Command val="0"/>
@@ -1188,7 +1188,7 @@
 				<Command val="2007"/>
 			</Component>
 		</Animation>
-		<Animation name="Angry (Talk)">
+		<Animation name="Angry Talk">
 			<Component name="Float" xyz="1,0,0">
 				<Command val="3000"/>
 				<Command val="0"/>
