@@ -170,7 +170,7 @@
 			</Component>
 			<Component name="Head" xyz="4,13,3">
 				<Command val="8100"/>
-				<Command val="1003"/>
+				<Command val="1002"/>
 				<Command val="30"/>
 				<Command val="8"/>
 				<Command val="E"/>

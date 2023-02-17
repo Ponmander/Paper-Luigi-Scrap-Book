@@ -1,0 +1,57 @@
+#import newenemy/KingBoo.bpat
+
+#new:StageTable $StageTable
+{
+"mim_01" $Stage_Forest 
+00000000 00000000 
+}
+
+#new:Script $Script_BeforeBattle_Forest
+{
+    %Call     SetSpriteShading 	( FFFFFFFF )
+    Call     $Function_80218360 ( )
+    Return
+    End
+}
+
+#new:Script $Script_AfterBattle_Forest
+{
+    Return
+    End
+}
+
+#new:Stage $Stage_Forest
+{
+"mim_tex"  % mim_tex
+"mim_bt01_shape"  % mim_bt01_shape
+"mim_bt01_hit"  % mim_bt01_hit
+$Script_BeforeBattle_Forest 
+$Script_AfterBattle_Forest 
+00000000 
+00000000 
+00000000 
+00000000 
+00000000 
+}
+
+#new:Vector3D $Vector3D_KingBoo
+{
+75` 0` 10`
+}
+
+#new:Formation $Formation_00
+{
+$FakeKingBoo $Vector3D_KingBoo 0000000A 00000000 00000000 00000000 00000000 
+}
+
+#new:Formation $Formation_01
+{
+$KingBoo $Vector3D_KingBoo 0000000A 00000000 00000000 00000000 00000000 
+}
+
+#new:FormationTable $FormationTable
+{
+00000000 00000001 $Formation_00 $Stage_Forest 00000000 
+00000000 00000001 $Formation_01 $Stage_Forest 00000000 
+00000000 00000000 00000000 00000000 00000000 % unused
+}
