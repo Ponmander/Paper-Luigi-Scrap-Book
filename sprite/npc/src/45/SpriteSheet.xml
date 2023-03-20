@@ -640,11 +640,14 @@
 				<Command val="0"/>
 				<Command val="2000"/>
 			</Component>
-			<Component xyz="0,0,0">
-				<Command val="8100"/>
+			<Component xyz="0,-3,0">
 				<Command val="1026"/>
 				<Command val="6"/>
 				<Command val="1027"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
 				<Command val="4"/>
 				<Command val="1026"/>
 				<Command val="4000"/>
