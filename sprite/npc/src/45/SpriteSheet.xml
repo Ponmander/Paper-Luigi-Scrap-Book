@@ -8,6 +8,7 @@
 		<Palette id="4" src="Palette_04.png"/>
 		<Palette id="5" name="Raster_20" src="Raster_20.pal.png"/>
 		<Palette id="6" name="Raster_50" src="Raster_50.pal.png"/>
+		<Palette id="7" name="Pink" src="Pink.png"/>
 	</PaletteList>
 	<RasterList>
 		<Raster id="0" palette="0" src="Raster_00.png"/>
@@ -53,6 +54,7 @@
 		<Raster id="28" name="Raster_50" palette="6" src="Raster_50.png"/>
 		<Raster id="29" name="Raster_51" palette="6" src="Raster_51.png"/>
 		<Raster id="2A" name="Raster_52" palette="6" src="Raster_52.png"/>
+		<Raster id="2B" name="Raster_53" palette="7" src="Raster_53.png"/>
 	</RasterList>
 	<AnimationList>
 		<Animation name="Anim_00">
@@ -436,6 +438,8 @@
 			</Component>
 		</Animation>
 		<Animation name="Shot">
+			<Component name="New Comp" xyz="0,0,0">
+			</Component>
 			<Component name="Body" xyz="0,-3,0">
 				<Command val="1020"/>
 				<Command val="18"/>
@@ -622,6 +626,74 @@
 				<Command val="4000"/>
 				<Command val="0"/>
 				<Command val="FFB5"/>
+				<Command val="2"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="Seed">
+			<Component name="Movement" xyz="0,2,0">
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="3000"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="3000"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Fireball" xyz="0,-1,0">
+				<Command val="102B"/>
+				<Command val="2"/>
+				<Command val="102B"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFF4"/>
+				<Command val="2"/>
+				<Command val="102B"/>
+				<Command val="3000"/>
+				<Command val="FFFD"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFEC"/>
+				<Command val="2"/>
+				<Command val="102B"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFF4"/>
+				<Command val="2"/>
+				<Command val="102B"/>
+				<Command val="2"/>
+				<Command val="102B"/>
+				<Command val="3000"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="C"/>
 				<Command val="2"/>
 				<Command val="2000"/>
 			</Component>
