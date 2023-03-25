@@ -220,6 +220,10 @@
 				<Command val="4000"/>
 				<Command val="0"/>
 				<Command val="0"/>
+				<Command val="3000"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="0"/>
 				<Command val="4"/>
 				<Command val="102C"/>
 				<Command val="4000"/>
@@ -227,6 +231,10 @@
 				<Command val="FFF6"/>
 				<Command val="4"/>
 				<Command val="102C"/>
+				<Command val="3000"/>
+				<Command val="1"/>
+				<Command val="2"/>
+				<Command val="0"/>
 				<Command val="4000"/>
 				<Command val="0"/>
 				<Command val="0"/>
