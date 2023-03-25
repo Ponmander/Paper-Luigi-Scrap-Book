@@ -47,11 +47,11 @@
 		<Raster id="25" name="Raster_67" palette="0" src="Raster_67.png"/>
 		<Raster id="26" name="Raster_68" palette="0" src="Raster_68.png"/>
 		<Raster id="27" name="Raster_69" palette="0" src="Raster_69.png"/>
-		<Raster id="28" name="Raster_70" palette="0" src="Raster_70.png"/>
-		<Raster id="29" name="Raster_71" palette="0" src="Raster_71.png"/>
-		<Raster id="2A" name="Raster_72" palette="0" src="Raster_72.png"/>
-		<Raster id="2B" name="Raster_73" palette="0" src="Raster_73.png"/>
-		<Raster id="2C" name="Raster_3A" palette="0" src="Raster_3A.png"/>
+		<Raster id="28" name="Raster_3A" palette="0" src="Raster_3A.png"/>
+		<Raster id="29" name="Raster_73" palette="0" src="Raster_73.png"/>
+		<Raster id="2A" name="Raster_70" palette="0" src="Raster_70.png"/>
+		<Raster id="2B" name="Raster_71" palette="0" src="Raster_71.png"/>
+		<Raster id="2C" name="Raster_72" palette="0" src="Raster_72.png"/>
 	</RasterList>
 	<AnimationList>
 		<Animation name="Idle">
@@ -200,23 +200,23 @@
 		</Animation>
 		<Animation name="Hurt">
 			<Component name="Body" xyz="15,0,0">
-				<Command val="1028"/>
-				<Command val="4"/>
-				<Command val="1029"/>
-				<Command val="4"/>
 				<Command val="102A"/>
 				<Command val="4"/>
 				<Command val="102B"/>
 				<Command val="4"/>
+				<Command val="102C"/>
+				<Command val="4"/>
+				<Command val="1029"/>
+				<Command val="4"/>
 				<Command val="2000"/>
 			</Component>
 			<Component name="Trident" xyz="10,2,0">
-				<Command val="102C"/>
+				<Command val="1028"/>
 				<Command val="4000"/>
 				<Command val="0"/>
 				<Command val="A"/>
 				<Command val="4"/>
-				<Command val="102C"/>
+				<Command val="1028"/>
 				<Command val="4000"/>
 				<Command val="0"/>
 				<Command val="0"/>
@@ -225,12 +225,12 @@
 				<Command val="0"/>
 				<Command val="0"/>
 				<Command val="4"/>
-				<Command val="102C"/>
+				<Command val="1028"/>
 				<Command val="4000"/>
 				<Command val="0"/>
 				<Command val="FFF6"/>
 				<Command val="4"/>
-				<Command val="102C"/>
+				<Command val="1028"/>
 				<Command val="3000"/>
 				<Command val="1"/>
 				<Command val="2"/>
