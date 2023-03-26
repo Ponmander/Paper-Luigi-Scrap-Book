@@ -1,143 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SpriteSheet maxComponents="1" paletteGroups="1">
+<SpriteSheet maxComponents="1" paletteGroups="4">
 	<PaletteList>
-		<Palette id="0" src="Palette_00.png"/>
-		<Palette id="1" src="Palette_01.png"/>
-		<Palette id="2" src="Palette_02.png"/>
-		<Palette id="3" src="Palette_03.png"/>
-		<Palette id="4" src="Palette_04.png"/>
+		<Palette id="0" name="TweeterWhiteRedBlue" src="TweeterWhiteRedBlue.png"/>
+		<Palette id="1" name="TweeterWhiteGreenBlue" src="TweeterWhiteGreenBlue.png"/>
+		<Palette id="2" name="TweeterRedWhiteRed" src="TweeterRedWhiteRed.png"/>
+		<Palette id="3" name="TweeterRedPurpleRed" src="TweeterRedPurpleRed.png"/>
 	</PaletteList>
 	<RasterList>
-		<Raster id="0" palette="0" src="Raster_00.png"/>
-		<Raster id="1" palette="0" src="Raster_01.png"/>
-		<Raster id="2" palette="0" src="Raster_02.png"/>
-		<Raster id="3" palette="0" src="Raster_03.png"/>
-		<Raster id="4" palette="0" src="Raster_04.png"/>
-		<Raster id="5" palette="4" src="Raster_05.png"/>
-		<Raster id="6" palette="4" src="Raster_06.png"/>
-		<Raster id="7" palette="4" src="Raster_07.png"/>
-		<Raster id="8" palette="0" src="Raster_08.png"/>
+		<Raster id="0" name="Raster_20" palette="0" src="Raster_20.png"/>
+		<Raster id="1" name="Raster_21" palette="0" src="Raster_21.png"/>
+		<Raster id="2" name="Raster_22" palette="0" src="Raster_22.png"/>
+		<Raster id="3" name="Raster_23" palette="0" src="Raster_23.png"/>
+		<Raster id="4" name="Raster_24" palette="0" src="Raster_24.png"/>
+		<Raster id="5" name="Raster_25" palette="0" src="Raster_25.png"/>
+		<Raster id="6" name="Raster_26" palette="0" src="Raster_26.png"/>
+		<Raster id="7" name="Raster_27" palette="0" src="Raster_27.png"/>
+		<Raster id="8" name="Raster_28" palette="0" src="Raster_28.png"/>
+		<Raster id="9" name="Raster_29" palette="0" src="Raster_29.png"/>
+		<Raster id="A" name="Raster_30" palette="0" src="Raster_30.png"/>
+		<Raster id="B" name="Raster_31" palette="0" src="Raster_31.png"/>
+		<Raster id="C" name="Raster_32" palette="0" src="Raster_32.png"/>
+		<Raster id="D" name="Raster_33" palette="0" src="Raster_33.png"/>
+		<Raster id="E" name="Raster_34" palette="0" src="Raster_34.png"/>
+		<Raster id="F" name="Raster_35" palette="0" src="Raster_35.png"/>
+		<Raster id="10" name="Raster_36" palette="0" src="Raster_36.png"/>
+		<Raster id="11" name="Raster_37" palette="0" src="Raster_37.png"/>
+		<Raster id="12" name="Raster_38" palette="0" src="Raster_38.png"/>
+		<Raster id="13" name="Raster_39" palette="0" src="Raster_39.png"/>
+		<Raster id="14" name="Raster_40" palette="0" src="Raster_40.png"/>
+		<Raster id="15" name="Raster_41" palette="0" src="Raster_41.png"/>
+		<Raster id="16" name="Raster_42" palette="0" src="Raster_42.png"/>
+		<Raster id="17" name="Raster_43" palette="0" src="Raster_43.png"/>
+		<Raster id="18" name="Raster_44" palette="0" src="Raster_44.png"/>
+		<Raster id="19" name="Raster_45" palette="0" src="Raster_45.png"/>
+		<Raster id="1A" name="Raster_46" palette="0" src="Raster_46.png"/>
+		<Raster id="1B" name="Raster_47" palette="0" src="Raster_47.png"/>
+		<Raster id="1C" name="Raster_48" palette="0" src="Raster_48.png"/>
+		<Raster id="1D" name="Raster_49" palette="0" src="Raster_49.png"/>
+		<Raster id="1E" name="Raster_50" palette="0" src="Raster_50.png"/>
 	</RasterList>
 	<AnimationList>
-		<Animation name="Anim_00">
-			<Component name="Comp_00" xyz="0,0,0">
-				<Command val="1000"/>
-				<Command val="2"/>
-				<Command val="2000"/>
-			</Component>
-		</Animation>
-		<Animation name="Anim_01">
-			<Component name="Comp_00" xyz="0,0,0">
-				<Command val="1000"/>
-				<Command val="1"/>
-				<Command val="2000"/>
-			</Component>
-		</Animation>
-		<Animation name="Anim_02">
-			<Component name="Comp_00" xyz="0,0,0">
-				<Command val="3000"/>
-				<Command val="FFFF"/>
-				<Command val="FFF8"/>
-				<Command val="0"/>
+		<Animation name="Idle">
+			<Component xyz="0,0,0">
 				<Command val="1001"/>
-				<Command val="1"/>
-				<Command val="2000"/>
-			</Component>
-		</Animation>
-		<Animation name="Anim_03">
-			<Component name="Comp_00" xyz="0,0,0">
-				<Command val="1000"/>
-				<Command val="4"/>
+				<Command val="C"/>
 				<Command val="1002"/>
 				<Command val="4"/>
-				<Command val="2000"/>
-			</Component>
-		</Animation>
-		<Animation name="Anim_04">
-			<Component name="Comp_00" xyz="0,0,0">
-				<Command val="1000"/>
-				<Command val="6"/>
-				<Command val="1002"/>
-				<Command val="6"/>
-				<Command val="2000"/>
-			</Component>
-		</Animation>
-		<Animation name="Anim_05">
-			<Component name="Comp_00" xyz="0,0,0">
-				<Command val="1000"/>
-				<Command val="A"/>
-				<Command val="1002"/>
-				<Command val="A"/>
-				<Command val="2000"/>
-			</Component>
-		</Animation>
-		<Animation name="Anim_06">
-			<Component name="Comp_00" xyz="0,0,0">
 				<Command val="1003"/>
+				<Command val="12"/>
+				<Command val="7000"/>
+				<Command val="5"/>
+				<Command val="1001"/>
+				<Command val="12"/>
+				<Command val="1001"/>
 				<Command val="6"/>
-				<Command val="3000"/>
-				<Command val="8"/>
-				<Command val="0"/>
-				<Command val="0"/>
+				<Command val="1000"/>
+				<Command val="6"/>
+				<Command val="700A"/>
+				<Command val="1"/>
+				<Command val="1001"/>
+				<Command val="12"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="Walk">
+			<Component xyz="0,0,0">
 				<Command val="1004"/>
 				<Command val="6"/>
-				<Command val="2000"/>
-			</Component>
-		</Animation>
-		<Animation name="Anim_07">
-			<Component name="Comp_00" xyz="0,0,0">
 				<Command val="1005"/>
 				<Command val="6"/>
-				<Command val="3001"/>
-				<Command val="8"/>
-				<Command val="0"/>
-				<Command val="0"/>
 				<Command val="1006"/>
+				<Command val="6"/>
+				<Command val="1007"/>
+				<Command val="6"/>
+				<Command val="1008"/>
+				<Command val="6"/>
+				<Command val="1009"/>
 				<Command val="6"/>
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Anim_08">
-			<Component name="Comp_00" xyz="0,0,0">
-				<Command val="3001"/>
-				<Command val="8"/>
-				<Command val="0"/>
-				<Command val="0"/>
-				<Command val="1006"/>
-				<Command val="2"/>
+		<Animation name="Dash">
+			<Component xyz="0,0,0">
+				<Command val="100A"/>
+				<Command val="4"/>
+				<Command val="100B"/>
+				<Command val="4"/>
+				<Command val="100C"/>
+				<Command val="4"/>
+				<Command val="100D"/>
+				<Command val="4"/>
 				<Command val="2000"/>
 			</Component>
 		</Animation>
-		<Animation name="Anim_09">
-			<Component name="Comp_00" xyz="0,0,0">
-				<Command val="3001"/>
+		<Animation name="Fall">
+			<Component xyz="-8,0,0">
+				<Command val="100E"/>
+				<Command val="C"/>
+				<Command val="100F"/>
+				<Command val="6"/>
+				<Command val="1010"/>
+				<Command val="4"/>
+				<Command val="1011"/>
+				<Command val="2"/>
+				<Command val="1012"/>
+				<Command val="20"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="Hurt">
+			<Component xyz="0,0,0">
+				<Command val="1013"/>
+				<Command val="6"/>
+				<Command val="1014"/>
+				<Command val="2"/>
+				<Command val="1015"/>
+				<Command val="4"/>
+				<Command val="1016"/>
+				<Command val="2"/>
+				<Command val="1017"/>
+				<Command val="3000"/>
 				<Command val="FFFF"/>
-				<Command val="FFF8"/>
 				<Command val="0"/>
-				<Command val="1007"/>
-				<Command val="1"/>
-				<Command val="2000"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="1018"/>
+				<Command val="6"/>
+				<Command val="1019"/>
+				<Command val="3000"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="101A"/>
+				<Command val="6"/>
+				<Command val="2008"/>
 			</Component>
 		</Animation>
-		<Animation name="Anim_0A">
-			<Component name="Comp_00" xyz="0,0,0">
-				<Command val="1008"/>
-				<Command val="2"/>
-				<Command val="2000"/>
-			</Component>
-		</Animation>
-		<Animation name="Anim_0B">
-			<Component name="Comp_00" xyz="0,0,0">
-				<Command val="4000"/>
-				<Command val="0"/>
-				<Command val="FFC7"/>
-				<Command val="3001"/>
-				<Command val="FFEA"/>
-				<Command val="A"/>
-				<Command val="0"/>
-				<Command val="1002"/>
-				<Command val="2"/>
-				<Command val="2000"/>
+		<Animation name="Death">
+			<Component xyz="-8,0,0">
+				<Command val="101B"/>
+				<Command val="12"/>
+				<Command val="101C"/>
+				<Command val="6"/>
+				<Command val="101D"/>
+				<Command val="6"/>
+				<Command val="101E"/>
+				<Command val="6"/>
+				<Command val="2006"/>
 			</Component>
 		</Animation>
 	</AnimationList>
