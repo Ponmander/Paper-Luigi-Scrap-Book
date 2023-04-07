@@ -60,8 +60,12 @@
 		<Raster id="22" name="Raster_29" palette="12" src="Raster_29.png"/>
 		<Raster id="23" name="Raster_30" palette="12" src="Raster_30.png"/>
 		<Raster id="24" name="Raster_31" palette="12" src="Raster_31.png"/>
-		<Raster id="25" name="Raster_32" palette="12" src="Raster_32.png"/>
-		<Raster id="26" name="Raster_33" palette="12" src="Raster_33.png"/>
+		<Raster id="25" name="Raster_34" palette="12" src="Raster_34.png"/>
+		<Raster id="26" name="Raster_35" palette="12" src="Raster_35.png"/>
+		<Raster id="27" name="Raster_32" palette="12" src="Raster_32.png"/>
+		<Raster id="28" name="Raster_33" palette="12" src="Raster_33.png"/>
+		<Raster id="29" name="Raster_36" palette="12" src="Raster_36.png"/>
+		<Raster id="2A" name="Raster_37" palette="12" src="Raster_37.png"/>
 	</RasterList>
 	<AnimationList>
 		<Animation name="Anim_00">
@@ -1127,6 +1131,39 @@
 				<Command val="2000"/>
 			</Component>
 		</Animation>
+		<Animation name="Panic">
+			<Component name="Idle" xyz="0,0,0">
+				<Command val="1029"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="3000"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="102A"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="1029"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFFD"/>
+				<Command val="3000"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="102A"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
 		<Animation name="Move Down">
 			<Component name="Idle" xyz="0,0,0">
 				<Command val="8100"/>
@@ -1162,69 +1199,67 @@
 			</Component>
 		</Animation>
 		<Animation name="Move Up">
-			<Component name="Idle" xyz="0,22,0">
-				<Command val="8100"/>
-				<Command val="1019"/>
+			<Component name="Idle" xyz="0,0,0">
+				<Command val="1025"/>
 				<Command val="4000"/>
 				<Command val="0"/>
-				<Command val="B1"/>
-				<Command val="3000"/>
-				<Command val="1"/>
-				<Command val="0"/>
-				<Command val="0"/>
-				<Command val="4"/>
-				<Command val="101F"/>
-				<Command val="4000"/>
-				<Command val="0"/>
-				<Command val="B4"/>
-				<Command val="4"/>
-				<Command val="1019"/>
-				<Command val="4000"/>
-				<Command val="0"/>
-				<Command val="FF4F"/>
+				<Command val="FFFD"/>
 				<Command val="3000"/>
 				<Command val="FFFF"/>
 				<Command val="0"/>
 				<Command val="0"/>
 				<Command val="4"/>
-				<Command val="101F"/>
+				<Command val="1026"/>
 				<Command val="4000"/>
 				<Command val="0"/>
-				<Command val="B4"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="1025"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="3000"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="1026"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="0"/>
 				<Command val="4"/>
 				<Command val="2000"/>
 			</Component>
 		</Animation>
 		<Animation name="Move Flee">
-			<Component name="Idle" xyz="0,28,0">
-				<Command val="8100"/>
-				<Command val="1025"/>
+			<Component name="Idle" xyz="0,0,0">
+				<Command val="1027"/>
 				<Command val="4000"/>
 				<Command val="0"/>
-				<Command val="B1"/>
-				<Command val="3000"/>
-				<Command val="1"/>
-				<Command val="0"/>
-				<Command val="0"/>
-				<Command val="4"/>
-				<Command val="1026"/>
-				<Command val="4000"/>
-				<Command val="0"/>
-				<Command val="B4"/>
-				<Command val="4"/>
-				<Command val="1025"/>
-				<Command val="4000"/>
-				<Command val="0"/>
-				<Command val="FF4F"/>
+				<Command val="FFFD"/>
 				<Command val="3000"/>
 				<Command val="FFFF"/>
 				<Command val="0"/>
 				<Command val="0"/>
 				<Command val="4"/>
-				<Command val="1026"/>
+				<Command val="1028"/>
 				<Command val="4000"/>
 				<Command val="0"/>
-				<Command val="B4"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="1027"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="3000"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="1028"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="0"/>
 				<Command val="4"/>
 				<Command val="2000"/>
 			</Component>
@@ -1243,7 +1278,7 @@
 			</Component>
 		</Animation>
 		<Animation name="Dead">
-			<Component name="Idle" xyz="0,10,0">
+			<Component name="Idle" xyz="0,0,0">
 				<Command val="1022"/>
 				<Command val="6"/>
 				<Command val="1023"/>
