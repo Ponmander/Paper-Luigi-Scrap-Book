@@ -1109,7 +1109,7 @@
 			</Component>
 		</Animation>
 		<Animation name="Idle">
-			<Component name="Idle" xyz="0,10,0">
+			<Component name="Idle" xyz="0,0,0">
 				<Command val="1019"/>
 				<Command val="6"/>
 				<Command val="101A"/>
@@ -1128,7 +1128,7 @@
 			</Component>
 		</Animation>
 		<Animation name="Move Down">
-			<Component name="Idle" xyz="0,5,0">
+			<Component name="Idle" xyz="0,0,0">
 				<Command val="8100"/>
 				<Command val="1019"/>
 				<Command val="4000"/>
@@ -1162,7 +1162,7 @@
 			</Component>
 		</Animation>
 		<Animation name="Move Up">
-			<Component name="Idle" xyz="0,28,0">
+			<Component name="Idle" xyz="0,22,0">
 				<Command val="8100"/>
 				<Command val="1019"/>
 				<Command val="4000"/>
